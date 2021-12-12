@@ -1,4 +1,4 @@
-# Medindo as diversidades $\alpha$, $\beta$ e $\gamma$ {#diversidader}
+# Medindo as diversidades $\alpha$, $\beta$ e $\gamma$: tutorial no R {#diversidader}
 
 ```{r, echo = FALSE, message = FALSE}
 knitr::opts_chunk$set(message = FALSE, echo = TRUE, warnings = FALSE)
@@ -13,33 +13,36 @@ St = ncol(pe) - 1
 epl = levels(factor(pe$Epoca))
 ```
 
-A tabela abaixo mostra a abundância de $`r St`$ peixes captradas na zona de arrebentação da Baís de Santos em 2015. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de $200$ m na zona de arrebentação das ondas seguindo a direção da linha da costa. No total foram $`r n`$ amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras `r nverao` foram tomadas no `r epl[2]` de $2015$ e as outras  `r ninverno` no `r epl[1]` de $2015$. As demais colunas mostram o número de indivíduos de cada espécie obtido nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
+A tabela abaixo mostra a abundância de $`r St`$ espécies de peixes captradas na zona de arrebentação da Baía de Santos em $2015$. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de $200$ m na zona de arrebentação, seguindo a direção da linha da costa. No total foram $`r n`$ amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras `r nverao` foram tomadas no `r epl[2]` de $2015$ e as outras  `r ninverno` no `r epl[1]` de $2015$. As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
 
 Vamos utilizar esta tabela como exemplo para calcularmos as diversidades $\alpha$, $\beta$ e $\gamma$.
 
-Os cálculos serão feitos no programa R. Antes de iniciar, é importante preparar seu ambiente de trabalho. Iremos utilizar o R-Studio como ambiente de programação, mas você pode utilizar outro de sua vontade. A seguir faremos toda a preparação necessárias, mas pode ser útil consultar os links abaixo:
+## Preparando o ambiente de trabalho
+
+Os cálculos serão feitos no programa R. Antes de iniciar, é importante preparar seu ambiente de trabalho. Iremos utilizar o R-Studio como ambiente de programação, mas você pode utilizar outro editor de sua preferência. A seguir faremos toda a preparação necessária, mas pode ser útil consultar os links abaixo:
 
 + <a href="https://fcopf.github.io/probest-introR/" target="_blank">Introdução ao Ambiente R de Programação - Capítulos 1 e 2</a>
 
 + <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulos 2 e 11</a>
 
-## Preparando o ambiente de trabalho
+___
 
-1. Após abrir o R-Studio e criar um arquivo, direcionane R para a pasta de trabalho em quie você irá trabalhar. Por exemplo:
+
+1. Após abrir o R-Studio e criar um arquivo, direcione o R para o diretório onde você irá inserir seus dados. Por exemplo:
 
 ```{r eval = FALSE}
-setwd('C:/Users/usuario/Documents/Bio_II_2021' )
+setwd('C:/Users/Usuario/Documents/Bio_II_2021' )
 ```
 
-2. Faça o download da base de dados (**arqivo .xlsx**) que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível para download no link <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
+2. Faça o download da base de dados que iremos utilizar e salve dentro do diretório que você selecionou acima. O arquivo é do tipo **.xlsx** e está disponível para download no link <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
 
-3. Caso ainda não tenha feito, instales os segintes pacotes com o comando abaixo:
+3. Caso ainda não tenha feito, instale os segintes pacotes com o comando abaixo:
 
 ```{r eval = FALSE}
 install.packages(c('tidyverse', 'vegan', 'patchwork', 'readxl', 'iNEXT'))
 ```
 
-4. E habilite os pacotes
+4. Habilite os pacotes
 
 ```{r eval = FALSE}
 library(tidyverse)
@@ -63,31 +66,35 @@ Após importar visualize a tabela:
 View(pe)
 ```
 
-E verifique se as colunas foram lidas corretamente. Digite o comando abaixo:
+E verifique se as colunas foram lidas corretamente digitando o comando abaixo:
 
 ```{r}
 glimpse(pe)
 ```
 
-Você deve ver uma saída parecida com esta. Verifique se `Epoca` aparace com o símbolo `<chr>`, indicando que é uma variável categórica e se todas as demais aparecem com o símbolo `<dbl>`, indicando que são variáveis quantitativas. Caso alguma variável (exceto `Epoca`) apareça como `<chr>` voce deve verificar em sua base de dados se existe algum caracter não numérico nas colunas das espécies.
+Você deve ver uma saída parecida com esta. Verifique se `Epoca` aparece com o símbolo `<chr>`, indicando que é uma variável categórica e se todas as demais aparecem com o símbolo `<dbl>`, indicando que são variáveis quantitativas. Caso alguma variável (exceto `Epoca`) apareça como `<chr>` você deve verificar em sua base de dados se existe algum caracter não numérico nas colunas das espécies.
 
 
 ## Diversidade $\alpha$
 
-A diversidade $\alpha$ se refere às diversidades registradas localente,isto é, em cada uma das amostras. Após obtermos estas medidas, nos interessa entender qual a diversidade média. Como dizemos no capítulo anterior, a diversidade pode ser caracterizada por diferentes índices. Os dois componentes principais do que entendermos por diversidade são: **riqueza de espécies** e **equabilidade** (ou uniformidade). O primeiro refere-se simplesmente ao número de espécies em uma amostra. Se contarmos o número de espécies presentes na primeira linha da tabela por exemplo, encontraremos $`r sum(pe[1,-1] > 0)`$ espécies (`r paste(colnames(pe[,-1])[pe[1,-1] > 0], collapse = ', ')`). Já na última amostra encontramos somente $`r sum(pe[12,-1] > 0)`$ espécies (`r paste(colnames(pe[,-1])[pe[12,-1] > 0], collapse = ', ')`).
+A diversidade $\alpha$ se refere às diversidades registradas localente, isto é, em cada uma das amostras. Após obtermos estas medidas, nos interessa entender qual é a diversidade média. Como dissemos no capítulo anterior, a diversidade pode ser caracterizada pela **riqueza de espécies**, **equabilidade** (ou uniformidade) ou um **índice de diversidade**. A riqueza refere-se simplesmente ao número de espécies em uma amostra. Se contarmos o número de espécies presentes na primeira linha da tabela por exemplo, encontraremos $`r sum(pe[1,-1] > 0)`$ espécies (`r paste(colnames(pe[,-1])[pe[1,-1] > 0], collapse = ', ')`). Já na última amostra encontramos somente $`r sum(pe[12,-1] > 0)`$ espécies (`r paste(colnames(pe[,-1])[pe[12,-1] > 0], collapse = ', ')`).
 
-O segundo componente da diversidade se refere ao padrão de distribuição das abundâncias relativas. Se todas as espécies forem *igualmente* abundantes, a uniformidade é máxima. Por outro lado, se uma ou poucas espécies são muito abundantes e todas as demais raras (compostas por poucos indivíduos), a uniformidade é baixa (= dominância alta). Na linha $3$ por exemplo, uma das espécies é composta por $`r max(pe[3,-1])`$ individuos, enquanto a segunda espécie mais abundante apareceu com somente $`r sort(as.numeric(pe[3,-1]), de = T)[2]`$.
+A equabilidade se refere ao padrão de distribuição das abundâncias relativas. Se todas as espécies forem *igualmente* abundantes, a equabilidade é máxima. Por outro lado, se uma ou poucas espécies são muito abundantes e todas as demais raras (compostas por poucos indivíduos), a uniformidade é baixa (= dominância alta). Na linha $3$ por exemplo, uma das espécies é composta por $`r max(pe[3,-1])`$ individuos, enquanto a segunda espécie mais abundante apareceu com somente $`r sort(as.numeric(pe[3,-1]), de = T)[2]`$. Esta amostra possui elevada dominância.
 
-Os índices de diversidade combinam a riqueza de espécies e equabilidade, para nos fonecer uma medida-resumo para as comunidades locais.
+Finalmente, os índices de diversidade combinam a riqueza de espécies e a equabilidade para nos fonecer uma medida-resumo para as comunidades locais.
 
-Como temos amostras tomadas em dois períodos nos interessa justamente comparar estes períodos em função das medidas de diversidade nas diferentes escalas.
+Como temos amostras tomadas em dois períodos nos interessa comparar estes períodos em função das medidas de diversidade nas diferentes escalas.
 
 ```{r echo = FALSE}
-pe %>% 
-  kableExtra::kable()
+pe %>%
+  kableExtra::kable() %>% 
+  row_spec(which(pe$Epoca == 'INVERNO'),
+              background = '#7be896', color = 'black') %>% 
+  row_spec(which(pe$Epoca == 'VERAO'),
+              background = '#e8867b', color = 'black')
 ```
 
-Vamos adicionar ao final da tabela `pe` três colunas, uma com a riqueza de espécies ($S$), uma com o índice de diversidade de Simpson ($D$) e outra com a equabilidade de Simpson ($E$). Desta forma teremos os três componentes de diversidade.
+Vamos adicionar ao final da tabela `pe` três colunas, uma com a riqueza de espécies ($S$), uma com o índice de diversidade de Simpson ($D$) e outra com a equabilidade de Simpson ($E$). Desta forma teremos as três medidas de diversidade relevantes.
 
 ```{r}
 pe = pe %>%
@@ -98,7 +105,7 @@ pe = pe %>%
   mutate(E = D/S)
 ```
 
-Ao digitar a tabela novamente verá as três novas colunas criadas.
+Ao digitar a tabela novamente veremos as três novas colunas, mostrando que para cada amostra foi calculado um valor de $S$, $D$ e $E$.
 
 ```{r eval = FALSE}
 View(pe)
@@ -113,9 +120,9 @@ pe %>%
   kable_styling(font_size = 10)
 ```
 
-Veja que para cada amostra foi calculado um valor de $S$, $D$ e $E$. A riqueza varia entre $`r min(S)`$ e $`r max(S)`$. Nenhuma amostra sozinha contém as $`r St`$ espécies totais encontradas na Baia.
 
 > Para manter a notação simples, estamos utilizando a simbologia $D$ mas, extritamente falando, o argumento `index = 'invsimpson'` calcula a recíproca do índice de Simpson ($1/D$). Deste modo valores mais altos são associados à comunidades mais diversas.  
+
 
 Para compararmos a diversidade $\alpha$ entre os períodos de `r epl[2]` e `r epl[1]` vamos fazer um `boxplot` e sobrepor um gráfico de dispersão.
 
@@ -150,26 +157,26 @@ plt_E = ggplot(pe) +
 plt_D | plt_S | plt_E
 ```
 
-> Para visualizar os gráficos lado-a-lado com o comando acima você deve ter instalado e habilitado o pacote `patchwork`.
+> Para visualizar os gráficos lado-a-lado com o comando acima, você deve ter instalado e habilitado o pacote `patchwork`.
 
-Note que é importante observar os três componentes da diversidade. Nas figuras, a diversidade medida pelo índice de Simpson parace mair elevada no período do `r epl[2]`. Entretanto a riqueza parece menor neste período, sugerindo que a elevada diversidade foi observada principalmente por influência da equabilidade, claramente mais elevada no `r epl[2]`. Deste modo, embora no período do inverno tenham apareceido em média mais espécies, a dominânca também foi maior, isto é, algumas espécies são desproporcionalmente mais abundantes que o restante nas comunidades. 
+Nas figuras, a diversidade medida pelo índice de Simpson parace mais elevada no período do `r epl[2]`. Entretanto a riqueza parece menor neste período, sugerindo que a elevada diversidade foi observada principalmente por influência da equabilidade, claramente mais elevada no `r epl[2]`. Deste modo, embora no período do inverno tenham aparecido em média mais espécies, a dominânca também foi maior, fazendso com que a diversidade ficasse reduzida. Como a diversidade é sempre uma medida comparativa, é importante observar os três componentes da diversidade.  
 
-> *Para detalhes sobre o boxplot, veja o link:* <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulos 7 e 11</a>
+> *Para detalhes sobre a construção de um boxplot, veja o link:* <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulos 7 e 11</a>
 
 ## Diversidade $\gamma$
 
 A princípio, a diversidade $\gamma$ pode ser medida com qualquer um dos índices utilizados para descrever a diversidade $\alpha$, bastando para isto somar as abundâncias das espécies em todos os pontos. Entretanto, quando olhamos para a diversidade total uma pergunta que devemos nos fazer é:
 
-> O número de amostras que tenho em mãos parece ter sido suficiente para caracterizar a comunidade?
+> O número de amostras que tenho em mãos foi suficiente para caracterizar a comunidade?
 
-É esperado por exemplo que ao adicionamos novas amostras locais, a riqueza de espécies também total aumente. Em nosso exemplo, se tivéssemos somente uma amostra, certamente não veríamos todas as $`r St`$ espécies de nossa matriz. Ao adicionar uma segunda amostra, novas espécies não observadas na primeira podem surgir, fazendo com que o número total aumente. À medida que continuamos adicionando amostras novas, é esperado que outras espécias vão sendo acumuladas no cômputo total. Entretanto, em algum momento, é esperado que já tenhamos observado todas as espécies e, a partir daí, a adição de novas amostras não trará nenhuma espécies que já não tenha sido observada. Neste momento, saberemos que a comunidade foi adequadamente caracterizada por sua riqueza total.
+É esperado por exemplo que ao adicionamos novas amostras, a riqueza de espécies total aumente. Em nosso exemplo, se tivéssemos somente uma amostra, certamente não veríamos todas as $`r St`$ espécies de nossa matriz. Ao adicionar uma segunda amostra, podem surgir novas espécies não observadas na primeira, fazendo com que o número total aumente. À medida que continuamos adicionando amostras novas, é esperado que outras espécias vão sendo acumuladas no cômputo total. Entretanto, em algum momento é esperado que já tenhamos observado todas as espécies e a partir daí, a adição de novas amostras não trará nenhuma espécie que já não tenha sido observada. Neste momento, saberemos que a comunidade foi adequadamente caracterizada por sua riqueza total.
 
 Para verificarmos como o número de espécies total aumenta com o número de amostras locais podemos construir uma **curva de acumulação de espécies** ou **curva do coletor**. Se fizermos isto para as seis amostras do `r epl[2]` teríamos:
 
 ```{r}
 ac_verao = pe %>% 
   filter(Epoca == 'VERAO') %>%
-  select(-Epoca) %>% 
+  select(sp_1:sp_10) %>% 
   specaccum(method = 'collector')
 
 plot(y = ac_verao$richness, x = ac_verao$sites,
@@ -178,13 +185,13 @@ plot(y = ac_verao$richness, x = ac_verao$sites,
      xlab = 'Número de amostras')
 ```
 
-Esta figura mostra que na primeira amostra do verão foram observadas $4$ espécies. Ao adicionar a segunda amostra, verificamos duas espécies adicionais, totalizando $6$ espécies. Nenhuma espécie adicional foi observada da $3^a$ a $5^a$ amostra e somente na $6^a$ amostra, mais uma espécie foi observada, totalizando $7$ espécies observadas no período do `r epl[2]`.
+Esta figura mostra que na primeira amostra do verão foram observadas $4$ espécies. Ao adicionar a segunda amostra, verificamos duas espécies adicionais, totalizando $6$ espécies. Nenhuma espécie adicional foi observada da $3^a$ a $5^a$ amostra. Somente na $6^a$ amostra, mais uma espécie foi observada, totalizando $7$ espécies capturadas no período do `r epl[2]`.
 
-A figura mostrada acima seguiu exatamente a sequência de amostras das linhas de nossa tabela, simplesmente pois foi a sequência registrada na base de dados. No entanto qualquer outra sequência seria igualamente válida. Assim, para termos um padrão **esperado**, existem vários métodos que nos permitirão encontrar uma valor de riqueza **médio** como função do número de amostras.
+A figura mostrada acima seguiu exatamente a sequência de amostras das linhas de nossa tabela. No entanto qualquer outra sequência seria igualmente válida. Assim, para termos um padrão **esperado**, existem vários métodos que nos permitirão encontrar uma valor de riqueza **médio** como função do número de amostras.
 
 A mesma ideia pode ser reformulada pensando na adição de indivíduos, isto é: a partir de quantos indivíduos amostrados a comunidade terá sua riqueza adaquadamente caracterizada?
 
-Vamos avalir esta questão para nossas comunidades de `r epl[2]` e de `r epl[1]`, construindo curvas de acumulação para a riqueza de espécies como função do número de indivíduos nas amostras. Pàra isto, vamos utilizar o pacote <a href="https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.html" target="_blank">iNEXT</a>.
+Vamos avalir esta questão para nossas comunidades de `r epl[2]` e de `r epl[1]`, construindo curvas de acumulação para a riqueza de espécies como função do número de indivíduos nas amostras. Para isto, vamos utilizar o pacote <a href="https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.html" target="_blank">iNEXT</a>.
 
 Inicialmente, precisamos criar uma lista separando as comunidades de verão e inverno:
 
@@ -192,23 +199,23 @@ Inicialmente, precisamos criar uma lista separando as comunidades de verão e in
 pe_list = list()
 pe_list$VERAO = pe %>% 
   filter(Epoca == 'VERAO') %>% 
-  select(-Epoca) %>% 
+  select(sp_1:sp_10) %>% 
   colSums()
   
 pe_list$INVERNO = pe %>% 
   filter(Epoca == 'INVERNO') %>% 
-  select(-Epoca) %>% 
+  select(sp_1:sp_10) %>% 
   colSums()
 ```
 
 Em seguida, utilizamos a função `iNEXT`, com os argumentos `datatype = 'abundance'` (indivíduos no eixo $x$) e `q = 0` (riqueza acumulada no eixo $y$).
 
 ```{r}
-gama_ac <- iNEXT(pe_list, 
+gama_ac = iNEXT(pe_list, 
                  datatype = 'abundance', 
                  q = 0)
 
-plt_nbreadth <- ggiNEXT(gama_ac) +
+plt_gama = ggiNEXT(gama_ac) +
   labs(y = 'Riqueza acumulada',
        x = 'Número de indivíduos') +
   theme_classic() +
@@ -217,20 +224,300 @@ plt_nbreadth <- ggiNEXT(gama_ac) +
         legend.title=element_blank())
 ```
 
+As curvas de acumulo de espécies nos dois períodos ficam:
 
 ```{r fig.align='center', fig.width=8, fig.height=5}
-plt_nbreadth
+plt_gama
 ```
 
-O método do pacote `iNEXT` permite fazermos uma **extrapolação** do que seria esperado. Desta figura pércebemos dois ponto importantes.
+As funções do pacote `iNEXT` nos permitem uma **extrapolação** do que seria esperado se continuássemos coletando. Desta figura percebemos dois pontos importantes.
 
-+ a riqueza total é similar entre os períodos, ainda que localmente, o verão tenha tido em média menor riqueza (veja padrões de diversidade $\alpha$).
++ a riqueza total é similar entre os períodos, ainda que localmente, o verão tenha tido em média menores riqueza locais (veja padrões de diversidade $\alpha$).
 
-+ A comunidade de `r epl[1]` tem mais indivíduos e aparentemente foi bem caracterizada, uma vez que a riqueza de espécies acumulada parece se estabilizar ao redor de 8 espécies. A comunidade de `r epl[2]` por outro lado, teve poucos indivíduos amostrados, de modo que ainda não há informação o suficiente para sabermos o que poderia acontecer caso continuássemos a amostrar as comunidades neste período. Esta incerteza pode ser observada na larga faixa em verde que contrasta com a faixa em vermelho menos estreita.
++ A comunidade de `r epl[1]` tem mais indivíduos e aparentemente foi melhor caracterizada, uma vez que a riqueza de espécies acumulada parece se estabilizar ao redor de 8 espécies. A comunidade de `r epl[2]` por outro lado, teve poucos indivíduos amostrados, de modo que ainda não há informação o suficiente para sabermos o que poderia acontecer caso continuássemos a amostrar as comunidades neste período. Esta incerteza pode ser observada na larga faixa em verde que contrasta com a faixa em vermelho mais estreita.
 
 ## Diversidade $\beta$
 
+A diversidade $\beta$ mede o grau de diferenciação entre manchas de habitat na paisagem. Tradicionalmente, duas abordagens têm sido utilizadas para expressar a diversidade $\beta$. A primeira é baseada na comparação entre a diversidade $\gamma$ da paisagem e as diversidades $\alpha$ locais, enquanto a segunda é baseada em medidas do grau de heterogeneidade na composição de espécies entre as amostras locais. Este grau de heterogeneidade é medido por **índices de similaridade**. Aqui iremos discutir esta segunda abordagem.
+
+### Índices de similaridade
+
+Os índices de similaridade medem a semelhança na composição de espécies entre pares de amostras ou dentro de um conjunto de mais de duas amostras. Existe uma variedade de índices de similaridade. A forma mais simples de medir a similaridade entre duas amostras é utilizando dados de presença e ausência na comunidade. Ao fazer isso, o resultado da comparação pode ser organizado em uma tabela de $2 \times 2$:
+
+```{r echo = FALSE}
+pa_table = tibble(
+  ' ' = factor(rep('Amostra 1', 2)), 
+  'Presença-Ausência' = c('1', '0'), 
+  `1` = c('a', 'c'),
+  `0` = c('b', 'd'))
+
+pa_table %>% 
+  kableExtra::kable() %>% 
+  kable_styling(full_width = F) %>% 
+  column_spec(1, bold = T) %>% 
+  collapse_rows(columns = 1, valign = 'middle') %>% 
+  add_header_above(c('', '', 'Amostra 2' = 2))
+```
+
+em que:
+
++ *$a$*: número de espécies presentes nas *duas* amostras;
+
++ *$b$*: número de espécies presentes *somente* na Amostra 1;
+
++ *$c$*: número de espécies presentes *somente* na Amostra 2;
+
++ *$d$*: número de espécies ausentes nas *duas* amostras.
+
+Diversos índices podem ser formulados a partir destas combinação, o mais simples deles é o **índice de Jaccard**, expresso como:
+
+$$J = \frac{a}{a + b + c}$$
+
+Vamos calcular o $J$ entre as duas primeira amostras de nossa comunidade:
+
+```{r echo = FALSE}
+linhas = c(1,2)
+pe_s = pe[linhas,] %>% select(sp_1:sp_10)
+pe_spa = decostand(pe_s, method = 'pa')
+
+a_id = which(apply(pe_spa, 2, sum) == 2)
+b_id = which(apply(pe_spa, 2, diff) == -1)
+c_id = which(apply(pe_spa, 2, diff) == 1)
+d_id = which(apply(pe_spa, 2, sum) == 0)
+
+a = length(a_id)
+b = length(b_id)
+c = length(c_id)
+d = length(d_id)
+
+pe_s %>%  
+  kableExtra::kable() %>%
+  kable_styling(full_width = F, font_size = 10) %>% 
+  column_spec(a_id, bold = T,
+              background = '#7be896', color = 'black') %>% 
+  column_spec(b_id, bold = T,
+              background = '#e8867b', color = 'black') %>% 
+  column_spec(c_id, bold = T,
+              background = '#7b94e8', color = 'black')
+```
+
+Em verde temos as espécies presentes nas duas amostras, em vermelho as espécies presentes somente na primeira amostra e em azul as espécies presentes somente na segunda amostra. Nossa tabela $2 \times 2$ fica:
+
+```{r echo = FALSE}
+tb12 = tibble(
+  ' ' = factor(rep('Amostra 1', 2)), 
+  'Presença-Ausência' = c('1', '0'), 
+  `1` = c(5, 2),
+  `0` = c(1, 2))
+
+tb12 %>% 
+  kableExtra::kable() %>% 
+  kable_styling(full_width = F) %>% 
+  column_spec(1, bold = T) %>% 
+  collapse_rows(columns = 1, valign = 'middle') %>% 
+  add_header_above(c('', '', 'Amostra 2' = 2))
+
+```
+
+e o índice de Jaccard:
+
+$J_{12} = \frac{`r a`}{`r a` + `r b` + `r c`} = \frac{`r a`}{`r a + b + c`} = `r a / (a + b + c)`$
+
+O índice de Jaccard aumenta conforme aumenta o número de espécies comuns às duas amostras, isto é, quando $a$ aumenta). O índice varia entre $0$ (nenhuma espécie em comum: $a = 0$) e $1$ (todas as espécies em comum: $b = c = 0$).
+
+Também é comum expressarmos este índice como um indice de **complementariedade ($C_J$)**, ou **dissimilaridade** fazendo simplesmente:
+
+$$C_{J} = 1 - \frac{a}{a + b + c}$$
+
+### Matriz de dissimilaridade
+
+Se temos duas amostras apenas, basta compararmos a amostra $1$ com a $2$. Se temos três amostras no entanto, podemos fazer comparações entre: $1-2$, $1-3$ e $2-3$. Estas comparações podem ser organizadas em **matrizes de dissimilaridades**.
+
+Por exemplo, ao comparar nossas três primeiras amostras.
+
+```{r echo = FALSE}
+linhas = c(1:3)
+pe13 = pe[linhas,] %>% select(sp_1:sp_10)
+
+pe13 %>%  
+  kableExtra::kable() %>%
+  kable_styling(full_width = F, font_size = 10)
+```
+
+As três comparações expressas em uma matriz de distância ficam:
+
+```{r echo = FALSE}
+j13 = vegan::vegdist(pe13, method = 'jaccard', binary = TRUE)
+
+j13 %>% 
+  as.matrix() %>%
+  as_tibble() %>%
+  mutate(C1 = paste('Amostra',1:3)) %>%
+  mutate_if(is.numeric, round, 3) %>% 
+  relocate(C1, .before = `1`) %>% 
+  kableExtra::kable(col.names = c(' ', paste('Amostra',1:3))) %>%
+  kable_styling(full_width = F) %>% 
+  column_spec(1, bold = T)
+```
+
+Veja que aqui estamos representando a **dissimilaridade** entre os pares de amostras ($C_{J} = 1 - J$). Neste caso, vemos que a amostra $1$ é mais diferente da amostra $2$ ($C_{12} = `r j13[1]`$) que da amostra $3$ ($C_{13} = `r j13[2]`$). 
+Veja também que a diagonal desta matriz é igual a $0$ pois a dissimilaridade de uma amostra com relação a ela mesma é mínima. Finalmente, veja que esta é uma matriz triangular **simétrica**, isto é os valores acima e abaixo da diagonal são iguais, pois a ordem da comparação não importa ($C_{12} = C_{21}$).
+
+### Visualizando uma matriz de dissimilaridade
+
+Á medida que aumenta o numero de amostras, aumenta também o número de comparações possíveis. Se temos $n$ amostras, o número de comparações possíveis é $n = \frac{n \times (n - 1)}{2}$.
+
+Para o exemplo do início do capítulo temos $n = `r n`$ amostras. Nossa matriz de similaridade terá $`r n`$ linhas por $`r n`$ colunas com $n = \frac{12 \times (11 - 1)}{2} = 66$ comparações possíveis. 
+
+Podemos calcular uma matriz de dissimilaridade no R utilizando o comando `vegdist` (disponível no pacote `vegan`).
+
+Inicialmente, criamos uma matriz somente com os dados de presença ($1$) e ausência ($0$) de cada espécie.
+
+```{r}
+pe_ocor = pe %>% 
+  select(sp_1:sp_10) %>% 
+  decostand(method = 'pa')
+```
+
+Em seguida calculamos o índice de Jaccard por:
+
+```{r}
+jac = vegdist(pe_ocor, method = 'jaccard', binary = TRUE)
+```
+
+> O argumento `method = 'jaccard'` especifica qual índice iremos utilizar.
+
+> O argumento `binary = TRUE` garante que o índice será calculado somente considerando a presença (1) e ausência (0) das espécies.
+
+Nossa matriz de dissimilaridade fica:
+
+```{r eval = F}
+jac %>% as.matrix()
+```
+
+```{r echo = FALSE}
+jac %>% 
+  as.matrix() %>%
+  as_tibble() %>%
+  mutate(C1 = paste('Amostra',1:n)) %>%
+  mutate_if(is.numeric, round, 3) %>% 
+  relocate(C1, .before = `1`) %>% 
+  kableExtra::kable(col.names = c(' ', paste('Amostra',1:n))) %>%
+  kable_styling(full_width = F, font_size = 9) %>% 
+  column_spec(1, bold = T)
+```
+
+Veja que é **muito difícil** reconhecer qualquer padrão em uma matriz deste tamanho. Assim, precisamos de um método gráfico para representá-la. Existem vários métodos disponíveis, entre eles técnicas de **agrupamento** e  técnicas de **ordenação**. Vamos utilizar uma técnica de ordenação chamada **Análise de Coordenadas Principais (PCoA)**.
+
+### Representando uma matriz de dissimilaridade
+
+A Análise de Coordenadas Principais (PCoA) nos permite transfomar a matriz de distância em um **"mapa"** de duas dimensões (eixos $x$ e $y$). Neste mapa pontos mais próximos entre sí têm composição de espécies similares e pontos mais distantes tem composições mais distintas. Também podemos posicionar as espécies neste mapa para entender quais espéçies estão mais associadas a um determinado conjunto de amostras.
+
+Sem entrar em datalhes do método, vamos aplicá-lo ao nosso exemplo e descrever os resultados:
+
+```{r}
+# Fazendo a PCoA
+pcoa = cmdscale(jac, eig = TRUE)
+
+# Mapeando as amostras
+mapa_amostras = pcoa$points %>%
+  as.data.frame() %>% 
+  mutate(Epoca = pe$Epoca)
+
+# Mapeando as espécies
+mapa_especies = envfit(pcoa, pe_ocor)$vectors$arrows[,1:2] %>%
+  as.data.frame() %>% 
+  rownames_to_column(var = 'Especies')
+```
+
+Os resultados podem ser expressos graficamente:
+
+```{r}
+plt_beta = ggplot() +
+  geom_point(data = mapa_amostras,
+             aes(x = V1, y = V2, color = Epoca)) +
+  geom_text(data = mapa_especies,
+             aes(x = Dim1, y = Dim2, label = Especies), 
+            color = 'darkblue') +
+  labs(x = 'Eixo 1', y = 'Eixo 2') +
+  theme_bw()
+
+plt_beta
+```
+
+Temos acima um mapa com eixos $1$ e $2$. Cada ponto é uma amostra (temos `r n` ao todo), identificadas de acordo com o período (`r paste(epl, collapse = ', ')`). As espécies identificadas pelo seu nome. 
+
+A maior parte dos pontos do verão aparece na posição mais a direita, enquanto os pontos de inverno mais a esquerda. Isto sugere que as amostras com composições mais similares entre si tendem a ser amostras coletadas em um mesmo período. 
+
+Posicionar as espécies nos ajuda a saber quais delas tendem a ser mais frequentes em cada período. As espécies à direita tendem a ser mais frequêntes no verão e as espécies mais à esquerda no inverno. Compare esta figura com nossa matriz original.
+
+```{r eval = FALSE}
+pe
+```
+
+```{r echo = FALSE}
+pe %>% 
+  kableExtra::kable() %>% 
+  kable_styling(full_width = F, font_size = 10) %>% 
+  row_spec(which(pe$Epoca == 'INVERNO'),
+              background = '#7be896', color = 'black') %>% 
+  row_spec(which(pe$Epoca == 'VERAO'),
+              background = '#e8867b', color = 'black')
+```
+
+Veja que as especies sp_9 e sp_10 ocorrem somente no verão. A espécie sp_6 ocorre em **todas** as amostras de verão, ainda que também esteja presente no inverno.
+
+A sp_3 por outro lado ocorre somente no inverno, aparacendo como a espécie mais a esquerda na figura.
+
+Finalmente, a sp_1 fica exatamente no meio do caminho, pois ocorre em **todas as `r n` amostras**.
+
+Utilizando este tipo de representação, podemos interpretar facilmente grandes matrizes de distância e compreender os padrões de variação (diversidade $\beta$) entre nossas amostras.
+
 ## Salvando as figuras deste tutorial
+
+Este tutorial utilizou a base de dados: <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a> como exemplo. Você pode replicá-lo para sua tabela de dados fazendo as devidas alterações de nomenclatura (ex. os nomes das colunas).
+
+Após rodar estas funções geramos uma série de figuras. Estas figuras podem ser salvas no formato **.png** (outro outro tipo de imagem) utilizando os comandos:
+
+```{r echo = FALSE}
+# Diversidade alfa
+div_alfa = plt_D | plt_S | plt_E
+ggsave(filename = 'imagens/Diversidade_alfa.png', 
+       plot = div_alfa, 
+       width = 15, height = 5)
+
+# Diversidade gama
+div_gama = plt_gama
+ggsave(filename = 'imagens/Diversidade_gama.png', 
+       plot = div_gama, 
+       width = 7, height = 5)
+
+# Diversidade beta
+div_beta = plt_beta
+ggsave(filename = 'imagens/Diversidade_beta.png', 
+       plot = div_beta,
+       width = 7, height = 5)
+```
+
+```{r eval = FALSE}
+div_alfa = plt_D | plt_S | plt_E
+ggsave(filename = 'Diversidade_alfa.png', 
+       plot = div_alfa, 
+       width = 15, height = 5)
+
+div_gama = plt_gama
+ggsave(filename = 'Diversidade_gama.png', 
+       plot = div_gama, 
+       width = 7, height = 5)
+
+div_beta = plt_beta
+ggsave(filename = 'Diversidade_beta.png', 
+       plot = div_beta,
+       width = 7, height = 5)
+
+```
+
+Após rodar estes comandos, as figuras serão salvas em sua pasta de trabalho, aquela que você definiu no início desta seção.
 
 
 ```{r echo = FALSE}

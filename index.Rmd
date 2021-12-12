@@ -17,7 +17,6 @@ description: "Medidas de diversidade"
 
 
 
-
 ```{r include=FALSE, fig.width=5, fig.align='center'}
 # automatically create a bib database for R packages
 knitr::write_bib(c(

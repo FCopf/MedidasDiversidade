@@ -7,4 +7,8 @@ preparando-o-ambiente-de-trabalho
 diversidade-alpha
 diversidade-gamma
 diversidade-beta
+índices-de-similaridade
+matriz-de-dissimilaridade
+visualizando-uma-matriz-de-dissimilaridade
+representando-uma-matriz-de-dissimilaridade
 salvando-as-figuras-deste-tutorial
