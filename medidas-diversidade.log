@@ -1,4 +1,4 @@
-This is LuaTeX, Version 1.10.0 (TeX Live 2019/Debian)  (format=lualatex 2021.11.6)  12 DEC 2021 13:20
+This is LuaTeX, Version 1.10.0 (TeX Live 2019/Debian)  (format=lualatex 2021.11.6)  12 DEC 2021 13:30
  restricted system commands enabled.
 **medidas-diversidade.tex
 (./medidas-diversidade.tex
@@ -1304,7 +1304,7 @@ Here is how much of LuaTeX's memory you used:
 , 12 attribute_list, 1 write, 1 user_defined nodes
    avail lists: 2:2148,3:302,4:750,5:620,6:23,7:4040,8:25,9:821,10:13,11:217
  38420 multiletter control sequences out of 65536+600000
- 112 fonts using 35300443 bytes
+ 112 fonts using 35300731 bytes
  58i,11n,115p,930b,403s stack positions out of 5000i,500n,10000p,200000b,100000s
 </usr/share/texmf/fonts/opentype/public/lm/lmmono10-italic.otf></usr/share/texmf
 /fonts/opentype/public/lm/lmroman9-bold.otf></usr/share/texmf/fonts/opentype/pub
@@ -1317,7 +1317,7 @@ lic/lm/lmroman10-bold.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman12-b
 old.otf></usr/share/texmf/fonts/opentype/public/lm/lmroman10-regular.otf></usr/s
 hare/texmf/fonts/opentype/public/lm/lmroman12-regular.otf></usr/share/texmf/font
 s/opentype/public/lm/lmroman17-regular.otf>
-Output written on medidas-diversidade.pdf (33 pages, 19957639 bytes).
+Output written on medidas-diversidade.pdf (33 pages, 19957648 bytes).
 
 PDF statistics: 462 PDF objects out of 1000 (max. 8388607)
  291 compressed objects within 3 object streams
