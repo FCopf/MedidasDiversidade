@@ -29,6 +29,7 @@ knitr::write_bib(c(
 ```{r setupP1, include=FALSE, message = FALSE, echo = FALSE, warning = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 library(tidyverse)
+library(readxl)
 library(vegan)
 library(magick)
 library(rfishdraw)
@@ -38,4 +39,5 @@ library(sads)
 library(RColorBrewer)
 library(wesanderson)
 library(kableExtra)
+library(iNEXT)
 ```

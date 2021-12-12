@@ -270,13 +270,8 @@ Na figura da direita (Figura 1.1B) também temos cinco amostras, porém cada uma
 
 Para diferenciar situações destes tipo definimos a **beta ($\beta$)** que mede a diferença entre as diversidades $\alpha$ e $\gamma$. Nos exemplos acima temos portanto que a Figura 1.1A descreve uma situação com **baixa diversidade $\beta$**, enquanto a Figura 1.1B descreve uma situação com **alta diversidade $\beta$**
 
-No capítulo seguinte iremos descrever como podemos medir a diversidade de espécies nas diferentes escalas.
+No capítulo seguinte iremos descrever como podemos medir e compreender a diversidade de espécies nas diferentes escalas.
 
-## Medindo as diversidades $\alpha$, $\beta$ e $\gamma$
-
-
-
-A tabela abaixo mostra a abundância de $$
 
 ```{r echo = FALSE}
 rm(list = ls())

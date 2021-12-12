@@ -2,7 +2,9 @@ fig:unnamed-chunk-10
 introdiversidade
 indices-de-diversidade
 diversidade-na-paisagem
-medindo-as-diversidades-alpha-beta-e-gamma
 diversidader
 preparando-o-ambiente-de-trabalho
 diversidade-alpha
+diversidade-gamma
+diversidade-beta
+salvando-as-figuras-deste-tutorial

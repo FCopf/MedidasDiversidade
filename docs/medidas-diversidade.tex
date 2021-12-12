@@ -249,12 +249,7 @@ Na figura da direita (Figura 1.1B) também temos cinco amostras, porém cada uma
 
 Para diferenciar situações destes tipo definimos a \textbf{beta (\(\beta\))} que mede a diferença entre as diversidades \(\alpha\) e \(\gamma\). Nos exemplos acima temos portanto que a Figura 1.1A descreve uma situação com \textbf{baixa diversidade \(\beta\)}, enquanto a Figura 1.1B descreve uma situação com \textbf{alta diversidade \(\beta\)}
 
-No capítulo seguinte iremos descrever como podemos medir a diversidade de espécies nas diferentes escalas.
-
-\hypertarget{medindo-as-diversidades-alpha-beta-e-gamma}{%
-\section{\texorpdfstring{Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\)}{Medindo as diversidades \textbackslash alpha, \textbackslash beta e \textbackslash gamma}}\label{medindo-as-diversidades-alpha-beta-e-gamma}}
-
-A tabela abaixo mostra a abundância de \$\$
+No capítulo seguinte iremos descrever como podemos medir e compreender a diversidade de espécies nas diferentes escalas.
 
 \hypertarget{diversidader}{%
 \chapter{\texorpdfstring{Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\)}{Medindo as diversidades \textbackslash alpha, \textbackslash beta e \textbackslash gamma}}\label{diversidader}}
@@ -269,7 +264,7 @@ Os cálculos serão feitos no programa R. Antes de iniciar, é importante prepar
 \item
   Introdução ao Ambiente R de Programação - Capítulos 1 e 2
 \item
-  Estatística nas Ciências Ambientais - Capítulo 2 e 11
+  Estatística nas Ciências Ambientais - Capítulos 2 e 11
 \end{itemize}
 
 \hypertarget{preparando-o-ambiente-de-trabalho}{%
@@ -291,26 +286,15 @@ Os cálculos serão feitos no programa R. Antes de iniciar, é importante prepar
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \setcounter{enumi}{1}
-\tightlist
 \item
-  Faça o download da base de dados que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível em:
-\end{enumerate}
-
-Baia\_santos.csv
-
-Ao clicarno link, copie os dados (Ctrl + C), abra um bloco de notas e colo (Ctrl + C). Salve o arquivo com o nome \textbf{Baia\_santos.csv}.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
+  Faça o download da base de dados (\textbf{arqivo .xlsx}) que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível para download no link Baia\_santos.xlsx
 \item
   Caso ainda não tenha feito, instales os segintes pacotes com o comando abaixo:
 \end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}vegan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}patchwork\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}readxl\textquotesingle{}}\NormalTok{))}
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}vegan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}patchwork\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}readxl\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}iNEXT\textquotesingle{}}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -328,10 +312,13 @@ Ao clicarno link, copie os dados (Ctrl + C), abra um bloco de notas e colo (Ctrl
 \FunctionTok{library}\NormalTok{(vegan)}
 \FunctionTok{library}\NormalTok{(patchwork)}
 \FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(iNEXT)}
 \end{Highlighting}
 \end{Shaded}
 
+\begin{quote}
 Os pacotes precisam ser instalados somente uma vez. No entanto, sempre que você fechar e abrir o R-Studio, precisará habilitá-los novamente.
+\end{quote}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -343,9 +330,43 @@ Os pacotes precisam ser instalados somente uma vez. No entanto, sempre que você
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pe }\OtherTok{=} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{\textquotesingle{}Baia\_santos.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{pe }\OtherTok{=} \FunctionTok{read\_excel}\NormalTok{(}\StringTok{\textquotesingle{}Baia\_santos.xlsx\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+Após importar visualize a tabela:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{View}\NormalTok{(pe)}
+\end{Highlighting}
+\end{Shaded}
+
+E verifique se as colunas foram lidas corretamente. Digite o comando abaixo:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{glimpse}\NormalTok{(pe)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 12
+## Columns: 11
+## $ Epoca <chr> "INVERNO", "INVERNO", "INVERNO", "INVERNO", "INVERNO", "INVERNO"~
+## $ sp_1  <dbl> 5, 6, 7, 0, 2, 0, 1, 0, 8, 2, 1, 1
+## $ sp_2  <dbl> 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+## $ sp_3  <dbl> 72, 1, 0, 0, 143, 95, 0, 0, 0, 0, 0, 0
+## $ sp_4  <dbl> 65, 18, 48, 13, 48, 28, 8, 1, 1, 0, 3, 0
+## $ sp_5  <dbl> 8, 9, 2, 4, 1, 0, 0, 3, 4, 6, 0, 0
+## $ sp_6  <dbl> 6, 12, 0, 1, 0, 0, 27, 2, 6, 2, 2, 7
+## $ sp_7  <dbl> 1, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0
+## $ sp_8  <dbl> 0, 1, 4, 0, 1, 0, 0, 0, 0, 0, 0, 0
+## $ sp_9  <dbl> 0, 0, 0, 0, 0, 0, 1, 0, 4, 0, 1, 0
+## $ sp_10 <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+\end{verbatim}
+
+Você deve ver uma saída parecida com esta. Verifique se \texttt{Epoca} aparace com o símbolo \texttt{\textless{}chr\textgreater{}}, indicando que é uma variável categórica e se todas as demais aparecem com o símbolo \texttt{\textless{}dbl\textgreater{}}, indicando que são variáveis quantitativas. Caso alguma variável (exceto \texttt{Epoca}) apareça como \texttt{\textless{}chr\textgreater{}} voce deve verificar em sua base de dados se existe algum caracter não numérico nas colunas das espécies.
 
 \hypertarget{diversidade-alpha}{%
 \section{\texorpdfstring{Diversidade \(\alpha\)}{Diversidade \textbackslash alpha}}\label{diversidade-alpha}}
@@ -387,6 +408,211 @@ VERAO & 1 & 0 & 0 & 3 & 0 & 2 & 0 & 0 & 1 & 0\\
 VERAO & 1 & 0 & 0 & 0 & 0 & 7 & 0 & 0 & 0 & 1\\
 \hline
 \end{tabular}
+
+Vamos adicionar ao final da tabela \texttt{pe} três colunas, uma com a riqueza de espécies (\(S\)), uma com o índice de diversidade de Simpson (\(D\)) e outra com a equabilidade de Simpson (\(E\)). Desta forma teremos os três componentes de diversidade.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe }\OtherTok{=}\NormalTok{ pe }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rowwise}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{S =} \FunctionTok{specnumber}\NormalTok{(}\FunctionTok{c\_across}\NormalTok{(sp\_1}\SpecialCharTok{:}\NormalTok{sp\_10)),}
+         \AttributeTok{D =} \FunctionTok{diversity}\NormalTok{(}\FunctionTok{c\_across}\NormalTok{(sp\_1}\SpecialCharTok{:}\NormalTok{sp\_10), }
+                       \AttributeTok{index =} \StringTok{\textquotesingle{}invsimpson\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{E =}\NormalTok{ D}\SpecialCharTok{/}\NormalTok{S)}
+\end{Highlighting}
+\end{Shaded}
+
+Ao digitar a tabela novamente verá as três novas colunas criadas.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{View}\NormalTok{(pe)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+Epoca & sp\_1 & sp\_2 & sp\_3 & sp\_4 & sp\_5 & sp\_6 & sp\_7 & sp\_8 & sp\_9 & sp\_10 & S & D & E\\
+\hline
+INVERNO & 5 & 6 & 72 & 65 & 8 & 6 & 1 & 0 & 0 & 0 & 7 & 2.775990 & 0.3965700\\
+\hline
+INVERNO & 6 & 0 & 1 & 18 & 9 & 12 & 0 & 1 & 0 & 0 & 6 & 3.763203 & 0.6272005\\
+\hline
+INVERNO & 7 & 0 & 0 & 48 & 2 & 0 & 0 & 4 & 0 & 0 & 4 & 1.568057 & 0.3920143\\
+\hline
+INVERNO & 0 & 0 & 0 & 13 & 4 & 1 & 0 & 0 & 0 & 0 & 3 & 1.741936 & 0.5806452\\
+\hline
+INVERNO & 2 & 0 & 143 & 48 & 1 & 0 & 0 & 1 & 0 & 0 & 5 & 1.670768 & 0.3341535\\
+\hline
+INVERNO & 0 & 0 & 95 & 28 & 0 & 0 & 1 & 0 & 0 & 0 & 3 & 1.567380 & 0.5224601\\
+\hline
+VERAO & 1 & 0 & 0 & 8 & 0 & 27 & 0 & 0 & 1 & 0 & 4 & 1.722013 & 0.4305031\\
+\hline
+VERAO & 0 & 0 & 0 & 1 & 3 & 2 & 2 & 0 & 0 & 0 & 4 & 3.555556 & 0.8888889\\
+\hline
+VERAO & 8 & 0 & 0 & 1 & 4 & 6 & 0 & 0 & 4 & 0 & 5 & 3.977444 & 0.7954887\\
+\hline
+VERAO & 2 & 0 & 0 & 0 & 6 & 2 & 0 & 0 & 0 & 0 & 3 & 2.272727 & 0.7575758\\
+\hline
+VERAO & 1 & 0 & 0 & 3 & 0 & 2 & 0 & 0 & 1 & 0 & 4 & 3.266667 & 0.8166667\\
+\hline
+VERAO & 1 & 0 & 0 & 0 & 0 & 7 & 0 & 0 & 0 & 1 & 3 & 1.588235 & 0.5294118\\
+\hline
+\end{tabular}
+\endgroup{}
+\end{table}
+
+Veja que para cada amostra foi calculado um valor de \(S\), \(D\) e \(E\). A riqueza varia entre \(6\) e \(10\). Nenhuma amostra sozinha contém as \(10\) espécies totais encontradas na Baia.
+
+\begin{quote}
+Para manter a notação simples, estamos utilizando a simbologia \(D\) mas, extritamente falando, o argumento \texttt{index\ =\ \textquotesingle{}invsimpson\textquotesingle{}} calcula a recíproca do índice de Simpson (\(1/D\)). Deste modo valores mais altos são associados à comunidades mais diversas.
+\end{quote}
+
+Para compararmos a diversidade \(\alpha\) entre os períodos de VERAO e INVERNO vamos fazer um \texttt{boxplot} e sobrepor um gráfico de dispersão.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plt\_D }\OtherTok{=} \FunctionTok{ggplot}\NormalTok{(pe) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Epoca, }\AttributeTok{y =}\NormalTok{ D) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{fill =} \StringTok{\textquotesingle{}lightblue\textquotesingle{}}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{\textquotesingle{}Diversidade de Simpson (1/D)\textquotesingle{}}\NormalTok{, }
+        \AttributeTok{x =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+
+\NormalTok{plt\_S }\OtherTok{=} \FunctionTok{ggplot}\NormalTok{(pe) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Epoca, }\AttributeTok{y =}\NormalTok{ S) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{fill =} \StringTok{\textquotesingle{}lightblue\textquotesingle{}}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{\textquotesingle{}Riqueza de Espécies (S)\textquotesingle{}}\NormalTok{, }
+        \AttributeTok{x =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+
+\NormalTok{plt\_E }\OtherTok{=} \FunctionTok{ggplot}\NormalTok{(pe) }\SpecialCharTok{+}
+  \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Epoca, }\AttributeTok{y =}\NormalTok{ E) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{fill =} \StringTok{\textquotesingle{}lightblue\textquotesingle{}}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_jitter}\NormalTok{(}\AttributeTok{width =} \FloatTok{0.1}\NormalTok{, }\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{\textquotesingle{}Equabilidade de Simpson (E)\textquotesingle{}}\NormalTok{, }
+        \AttributeTok{x =} \StringTok{\textquotesingle{}\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plt\_D }\SpecialCharTok{|}\NormalTok{ plt\_S }\SpecialCharTok{|}\NormalTok{ plt\_E}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-25-1} \end{center}
+
+\begin{quote}
+Para visualizar os gráficos lado-a-lado com o comando acima você deve ter instalado e habilitado o pacote \texttt{patchwork}.
+\end{quote}
+
+Note que é importante observar os três componentes da diversidade. Nas figuras, a diversidade medida pelo índice de Simpson parace mair elevada no período do VERAO. Entretanto a riqueza parece menor neste período, sugerindo que a elevada diversidade foi observada principalmente por influência da equabilidade, claramente mais elevada no VERAO. Deste modo, embora no período do inverno tenham apareceido em média mais espécies, a dominânca também foi maior, isto é, algumas espécies são desproporcionalmente mais abundantes que o restante nas comunidades.
+
+\begin{quote}
+\emph{Para detalhes sobre o boxplot, veja o link:} Estatística nas Ciências Ambientais - Capítulos 7 e 11
+\end{quote}
+
+\hypertarget{diversidade-gamma}{%
+\section{\texorpdfstring{Diversidade \(\gamma\)}{Diversidade \textbackslash gamma}}\label{diversidade-gamma}}
+
+A princípio, a diversidade \(\gamma\) pode ser medida com qualquer um dos índices utilizados para descrever a diversidade \(\alpha\), bastando para isto somar as abundâncias das espécies em todos os pontos. Entretanto, quando olhamos para a diversidade total uma pergunta que devemos nos fazer é:
+
+\begin{quote}
+O número de amostras que tenho em mãos parece ter sido suficiente para caracterizar a comunidade?
+\end{quote}
+
+É esperado por exemplo que ao adicionamos novas amostras locais, a riqueza de espécies também total aumente. Em nosso exemplo, se tivéssemos somente uma amostra, certamente não veríamos todas as \(10\) espécies de nossa matriz. Ao adicionar uma segunda amostra, novas espécies não observadas na primeira podem surgir, fazendo com que o número total aumente. À medida que continuamos adicionando amostras novas, é esperado que outras espécias vão sendo acumuladas no cômputo total. Entretanto, em algum momento, é esperado que já tenhamos observado todas as espécies e, a partir daí, a adição de novas amostras não trará nenhuma espécies que já não tenha sido observada. Neste momento, saberemos que a comunidade foi adequadamente caracterizada por sua riqueza total.
+
+Para verificarmos como o número de espécies total aumenta com o número de amostras locais podemos construir uma \textbf{curva de acumulação de espécies} ou \textbf{curva do coletor}. Se fizermos isto para as seis amostras do VERAO teríamos:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ac\_verao }\OtherTok{=}\NormalTok{ pe }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Epoca }\SpecialCharTok{==} \StringTok{\textquotesingle{}VERAO\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Epoca) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{specaccum}\NormalTok{(}\AttributeTok{method =} \StringTok{\textquotesingle{}collector\textquotesingle{}}\NormalTok{)}
+
+\FunctionTok{plot}\NormalTok{(}\AttributeTok{y =}\NormalTok{ ac\_verao}\SpecialCharTok{$}\NormalTok{richness, }\AttributeTok{x =}\NormalTok{ ac\_verao}\SpecialCharTok{$}\NormalTok{sites,}
+     \AttributeTok{type =} \StringTok{\textquotesingle{}b\textquotesingle{}}\NormalTok{, }\AttributeTok{pch =} \DecValTok{19}\NormalTok{, }\AttributeTok{col =} \DecValTok{2}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{,}
+     \AttributeTok{ylab =} \StringTok{\textquotesingle{}Riqueza acumulada\textquotesingle{}}\NormalTok{,}
+     \AttributeTok{xlab =} \StringTok{\textquotesingle{}Número de amostras\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+Esta figura mostra que na primeira amostra do verão foram observadas \(4\) espécies. Ao adicionar a segunda amostra, verificamos duas espécies adicionais, totalizando \(6\) espécies. Nenhuma espécie adicional foi observada da \(3^a\) a \(5^a\) amostra e somente na \(6^a\) amostra, mais uma espécie foi observada, totalizando \(7\) espécies observadas no período do VERAO.
+
+A figura mostrada acima seguiu exatamente a sequência de amostras das linhas de nossa tabela, simplesmente pois foi a sequência registrada na base de dados. No entanto qualquer outra sequência seria igualamente válida. Assim, para termos um padrão \textbf{esperado}, existem vários métodos que nos permitirão encontrar uma valor de riqueza \textbf{médio} como função do número de amostras.
+
+A mesma ideia pode ser reformulada pensando na adição de indivíduos, isto é: a partir de quantos indivíduos amostrados a comunidade terá sua riqueza adaquadamente caracterizada?
+
+Vamos avalir esta questão para nossas comunidades de VERAO e de INVERNO, construindo curvas de acumulação para a riqueza de espécies como função do número de indivíduos nas amostras. Pàra isto, vamos utilizar o pacote iNEXT.
+
+Inicialmente, precisamos criar uma lista separando as comunidades de verão e inverno:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pe\_list }\OtherTok{=} \FunctionTok{list}\NormalTok{()}
+\NormalTok{pe\_list}\SpecialCharTok{$}\NormalTok{VERAO }\OtherTok{=}\NormalTok{ pe }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Epoca }\SpecialCharTok{==} \StringTok{\textquotesingle{}VERAO\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Epoca) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{colSums}\NormalTok{()}
+  
+\NormalTok{pe\_list}\SpecialCharTok{$}\NormalTok{INVERNO }\OtherTok{=}\NormalTok{ pe }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(Epoca }\SpecialCharTok{==} \StringTok{\textquotesingle{}INVERNO\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{Epoca) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{colSums}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Em seguida, utilizamos a função \texttt{iNEXT}, com os argumentos \texttt{datatype\ =\ \textquotesingle{}abundance\textquotesingle{}} (indivíduos no eixo \(x\)) e \texttt{q\ =\ 0} (riqueza acumulada no eixo \(y\)).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gama\_ac }\OtherTok{\textless{}{-}} \FunctionTok{iNEXT}\NormalTok{(pe\_list, }
+                 \AttributeTok{datatype =} \StringTok{\textquotesingle{}abundance\textquotesingle{}}\NormalTok{, }
+                 \AttributeTok{q =} \DecValTok{0}\NormalTok{)}
+
+\NormalTok{plt\_nbreadth }\OtherTok{\textless{}{-}} \FunctionTok{ggiNEXT}\NormalTok{(gama\_ac) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{y =} \StringTok{\textquotesingle{}Riqueza acumulada\textquotesingle{}}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{\textquotesingle{}Número de indivíduos\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_classic}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{breaks =} \DecValTok{0}\SpecialCharTok{:}\DecValTok{10}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{, }
+        \AttributeTok{legend.title=}\FunctionTok{element\_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{plt\_nbreadth}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-29-1} \end{center}
+
+O método do pacote \texttt{iNEXT} permite fazermos uma \textbf{extrapolação} do que seria esperado. Desta figura pércebemos dois ponto importantes.
+
+\begin{itemize}
+\item
+  a riqueza total é similar entre os períodos, ainda que localmente, o verão tenha tido em média menor riqueza (veja padrões de diversidade \(\alpha\)).
+\item
+  A comunidade de INVERNO tem mais indivíduos e aparentemente foi bem caracterizada, uma vez que a riqueza de espécies acumulada parece se estabilizar ao redor de 8 espécies. A comunidade de VERAO por outro lado, teve poucos indivíduos amostrados, de modo que ainda não há informação o suficiente para sabermos o que poderia acontecer caso continuássemos a amostrar as comunidades neste período. Esta incerteza pode ser observada na larga faixa em verde que contrasta com a faixa em vermelho menos estreita.
+\end{itemize}
+
+\hypertarget{diversidade-beta}{%
+\section{\texorpdfstring{Diversidade \(\beta\)}{Diversidade \textbackslash beta}}\label{diversidade-beta}}
+
+\hypertarget{salvando-as-figuras-deste-tutorial}{%
+\section{Salvando as figuras deste tutorial}\label{salvando-as-figuras-deste-tutorial}}
 
   \bibliography{book.bib,packages.bib}
 

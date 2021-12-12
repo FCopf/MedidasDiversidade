@@ -1,11 +1,11 @@
 # Medindo as diversidades $\alpha$, $\beta$ e $\gamma$ {#diversidader}
 
 ```{r, echo = FALSE, message = FALSE}
-knitr::opts_chunk$set(message = FALSE, echo = FALSE, warnings = FALSE)
+knitr::opts_chunk$set(message = FALSE, echo = TRUE, warnings = FALSE)
 ```
 
-```{r}
-pe = read_delim('datasets/Baia_santos.csv', delim = ',')
+```{r echo = FALSE}
+pe = read_excel('datasets/Baia_santos.xlsx')
 n = nrow(pe)
 nverao = sum(pe$Epoca == 'VERAO')
 ninverno = sum(pe$Epoca == 'INVERNO')
@@ -21,43 +21,56 @@ Os cálculos serão feitos no programa R. Antes de iniciar, é importante prepar
 
 + <a href="https://fcopf.github.io/probest-introR/" target="_blank">Introdução ao Ambiente R de Programação - Capítulos 1 e 2</a>
 
-+ <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulo 2 e 11</a>
++ <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulos 2 e 11</a>
 
 ## Preparando o ambiente de trabalho
 
 1. Após abrir o R-Studio e criar um arquivo, direcionane R para a pasta de trabalho em quie você irá trabalhar. Por exemplo:
 
-```{r echo = TRUE, eval = FALSE}
+```{r eval = FALSE}
 setwd('C:/Users/usuario/Documents/Bio_II_2021' )
 ```
 
-2. Faça o download da base de dados que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível no link <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Baia_santos.csv</a>
-
-Ao clicar no link, copie os dados (Ctrl + C), abra um bloco de notas e colo (Ctrl + C). Salve o arquivo com o nome **Baia_santos.csv**.
+2. Faça o download da base de dados (**arqivo .xlsx**) que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível para download no link <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
 
 3. Caso ainda não tenha feito, instales os segintes pacotes com o comando abaixo:
 
-```{r echo = TRUE, eval = FALSE}
-install.packages(c('tidyverse', 'vegan', 'patchwork', 'readxl'))
+```{r eval = FALSE}
+install.packages(c('tidyverse', 'vegan', 'patchwork', 'readxl', 'iNEXT'))
 ```
 
 4. E habilite os pacotes
 
-```{r echo = TRUE, eval = FALSE}
+```{r eval = FALSE}
 library(tidyverse)
 library(vegan)
 library(patchwork)
 library(readxl)
+library(iNEXT)
 ```
 
 > Os pacotes precisam ser instalados somente uma vez. No entanto, sempre que você fechar e abrir o R-Studio, precisará habilitá-los novamente.
 
 5. Importe a base de dados para o R-Studio
 
-
-```{r echo = TRUE, eval = FALSE}
-pe = read_excel('Baia_santos.csv')
+```{r eval = FALSE}
+pe = read_excel('Baia_santos.xlsx')
 ```
+
+Após importar visualize a tabela:
+
+```{r eval = FALSE}
+View(pe)
+```
+
+E verifique se as colunas foram lidas corretamente. Digite o comando abaixo:
+
+```{r}
+glimpse(pe)
+```
+
+Você deve ver uma saída parecida com esta. Verifique se `Epoca` aparace com o símbolo `<chr>`, indicando que é uma variável categórica e se todas as demais aparecem com o símbolo `<dbl>`, indicando que são variáveis quantitativas. Caso alguma variável (exceto `Epoca`) apareça como `<chr>` voce deve verificar em sua base de dados se existe algum caracter não numérico nas colunas das espécies.
+
 
 ## Diversidade $\alpha$
 
@@ -69,12 +82,155 @@ Os índices de diversidade combinam a riqueza de espécies e equabilidade, para 
 
 Como temos amostras tomadas em dois períodos nos interessa justamente comparar estes períodos em função das medidas de diversidade nas diferentes escalas.
 
-
-```{r}
+```{r echo = FALSE}
 pe %>% 
   kableExtra::kable()
 ```
 
+Vamos adicionar ao final da tabela `pe` três colunas, uma com a riqueza de espécies ($S$), uma com o índice de diversidade de Simpson ($D$) e outra com a equabilidade de Simpson ($E$). Desta forma teremos os três componentes de diversidade.
+
+```{r}
+pe = pe %>%
+  rowwise() %>% 
+  mutate(S = specnumber(c_across(sp_1:sp_10)),
+         D = diversity(c_across(sp_1:sp_10), 
+                       index = 'invsimpson')) %>% 
+  mutate(E = D/S)
+```
+
+Ao digitar a tabela novamente verá as três novas colunas criadas.
+
+```{r eval = FALSE}
+View(pe)
+```
+
+```{r echo = FALSE}
+S = specnumber(pe[,-1])
+D = diversity(pe[,-1], index = 'invsimpson')
+E = D/S
+pe %>% 
+  kableExtra::kable() %>% 
+  kable_styling(font_size = 10)
+```
+
+Veja que para cada amostra foi calculado um valor de $S$, $D$ e $E$. A riqueza varia entre $`r min(S)`$ e $`r max(S)`$. Nenhuma amostra sozinha contém as $`r St`$ espécies totais encontradas na Baia.
+
+> Para manter a notação simples, estamos utilizando a simbologia $D$ mas, extritamente falando, o argumento `index = 'invsimpson'` calcula a recíproca do índice de Simpson ($1/D$). Deste modo valores mais altos são associados à comunidades mais diversas.  
+
+Para compararmos a diversidade $\alpha$ entre os períodos de `r epl[2]` e `r epl[1]` vamos fazer um `boxplot` e sobrepor um gráfico de dispersão.
+
+```{r}
+plt_D = ggplot(pe) +
+  aes(x = Epoca, y = D) +
+  geom_boxplot(fill = 'lightblue', alpha = 0.5) +
+  geom_jitter(width = 0.1, size = 3) +
+  labs(y = 'Diversidade de Simpson (1/D)', 
+        x = '') +
+  theme_classic()
+
+plt_S = ggplot(pe) +
+  aes(x = Epoca, y = S) +
+  geom_boxplot(fill = 'lightblue', alpha = 0.5) +
+  geom_jitter(width = 0.1, size = 3) +
+  labs(y = 'Riqueza de Espécies (S)', 
+        x = '') +
+  theme_classic()
+
+plt_E = ggplot(pe) +
+  aes(x = Epoca, y = E) +
+  geom_boxplot(fill = 'lightblue', alpha = 0.5) +
+  geom_jitter(width = 0.1, size = 3) +
+  labs(y = 'Equabilidade de Simpson (E)', 
+        x = '') +
+  theme_classic()
+
+```
+
+```{r fig.align='center', fig.width=12, fig.height=5}
+plt_D | plt_S | plt_E
+```
+
+> Para visualizar os gráficos lado-a-lado com o comando acima você deve ter instalado e habilitado o pacote `patchwork`.
+
+Note que é importante observar os três componentes da diversidade. Nas figuras, a diversidade medida pelo índice de Simpson parace mair elevada no período do `r epl[2]`. Entretanto a riqueza parece menor neste período, sugerindo que a elevada diversidade foi observada principalmente por influência da equabilidade, claramente mais elevada no `r epl[2]`. Deste modo, embora no período do inverno tenham apareceido em média mais espécies, a dominânca também foi maior, isto é, algumas espécies são desproporcionalmente mais abundantes que o restante nas comunidades. 
+
+> *Para detalhes sobre o boxplot, veja o link:* <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulos 7 e 11</a>
+
+## Diversidade $\gamma$
+
+A princípio, a diversidade $\gamma$ pode ser medida com qualquer um dos índices utilizados para descrever a diversidade $\alpha$, bastando para isto somar as abundâncias das espécies em todos os pontos. Entretanto, quando olhamos para a diversidade total uma pergunta que devemos nos fazer é:
+
+> O número de amostras que tenho em mãos parece ter sido suficiente para caracterizar a comunidade?
+
+É esperado por exemplo que ao adicionamos novas amostras locais, a riqueza de espécies também total aumente. Em nosso exemplo, se tivéssemos somente uma amostra, certamente não veríamos todas as $`r St`$ espécies de nossa matriz. Ao adicionar uma segunda amostra, novas espécies não observadas na primeira podem surgir, fazendo com que o número total aumente. À medida que continuamos adicionando amostras novas, é esperado que outras espécias vão sendo acumuladas no cômputo total. Entretanto, em algum momento, é esperado que já tenhamos observado todas as espécies e, a partir daí, a adição de novas amostras não trará nenhuma espécies que já não tenha sido observada. Neste momento, saberemos que a comunidade foi adequadamente caracterizada por sua riqueza total.
+
+Para verificarmos como o número de espécies total aumenta com o número de amostras locais podemos construir uma **curva de acumulação de espécies** ou **curva do coletor**. Se fizermos isto para as seis amostras do `r epl[2]` teríamos:
+
+```{r}
+ac_verao = pe %>% 
+  filter(Epoca == 'VERAO') %>%
+  select(-Epoca) %>% 
+  specaccum(method = 'collector')
+
+plot(y = ac_verao$richness, x = ac_verao$sites,
+     type = 'b', pch = 19, col = 2, lty = 2,
+     ylab = 'Riqueza acumulada',
+     xlab = 'Número de amostras')
+```
+
+Esta figura mostra que na primeira amostra do verão foram observadas $4$ espécies. Ao adicionar a segunda amostra, verificamos duas espécies adicionais, totalizando $6$ espécies. Nenhuma espécie adicional foi observada da $3^a$ a $5^a$ amostra e somente na $6^a$ amostra, mais uma espécie foi observada, totalizando $7$ espécies observadas no período do `r epl[2]`.
+
+A figura mostrada acima seguiu exatamente a sequência de amostras das linhas de nossa tabela, simplesmente pois foi a sequência registrada na base de dados. No entanto qualquer outra sequência seria igualamente válida. Assim, para termos um padrão **esperado**, existem vários métodos que nos permitirão encontrar uma valor de riqueza **médio** como função do número de amostras.
+
+A mesma ideia pode ser reformulada pensando na adição de indivíduos, isto é: a partir de quantos indivíduos amostrados a comunidade terá sua riqueza adaquadamente caracterizada?
+
+Vamos avalir esta questão para nossas comunidades de `r epl[2]` e de `r epl[1]`, construindo curvas de acumulação para a riqueza de espécies como função do número de indivíduos nas amostras. Pàra isto, vamos utilizar o pacote <a href="https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.html" target="_blank">iNEXT</a>.
+
+Inicialmente, precisamos criar uma lista separando as comunidades de verão e inverno:
+
+```{r}
+pe_list = list()
+pe_list$VERAO = pe %>% 
+  filter(Epoca == 'VERAO') %>% 
+  select(-Epoca) %>% 
+  colSums()
+  
+pe_list$INVERNO = pe %>% 
+  filter(Epoca == 'INVERNO') %>% 
+  select(-Epoca) %>% 
+  colSums()
+```
+
+Em seguida, utilizamos a função `iNEXT`, com os argumentos `datatype = 'abundance'` (indivíduos no eixo $x$) e `q = 0` (riqueza acumulada no eixo $y$).
+
+```{r}
+gama_ac <- iNEXT(pe_list, 
+                 datatype = 'abundance', 
+                 q = 0)
+
+plt_nbreadth <- ggiNEXT(gama_ac) +
+  labs(y = 'Riqueza acumulada',
+       x = 'Número de indivíduos') +
+  theme_classic() +
+  scale_y_continuous(breaks = 0:10) +
+  theme(legend.position = "bottom", 
+        legend.title=element_blank())
+```
+
+
+```{r fig.align='center', fig.width=8, fig.height=5}
+plt_nbreadth
+```
+
+O método do pacote `iNEXT` permite fazermos uma **extrapolação** do que seria esperado. Desta figura pércebemos dois ponto importantes.
+
++ a riqueza total é similar entre os períodos, ainda que localmente, o verão tenha tido em média menor riqueza (veja padrões de diversidade $\alpha$).
+
++ A comunidade de `r epl[1]` tem mais indivíduos e aparentemente foi bem caracterizada, uma vez que a riqueza de espécies acumulada parece se estabilizar ao redor de 8 espécies. A comunidade de `r epl[2]` por outro lado, teve poucos indivíduos amostrados, de modo que ainda não há informação o suficiente para sabermos o que poderia acontecer caso continuássemos a amostrar as comunidades neste período. Esta incerteza pode ser observada na larga faixa em verde que contrasta com a faixa em vermelho menos estreita.
+
+## Diversidade $\beta$
+
+## Salvando as figuras deste tutorial
 
 
 ```{r echo = FALSE}
