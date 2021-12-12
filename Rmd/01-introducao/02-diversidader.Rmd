@@ -1,0 +1,83 @@
+# Medindo as diversidades $\alpha$, $\beta$ e $\gamma$ {#diversidader}
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(message = FALSE, echo = FALSE, warnings = FALSE)
+```
+
+```{r}
+pe = read_delim('datasets/Baia_santos.csv', delim = ',')
+n = nrow(pe)
+nverao = sum(pe$Epoca == 'VERAO')
+ninverno = sum(pe$Epoca == 'INVERNO')
+St = ncol(pe) - 1
+epl = levels(factor(pe$Epoca))
+```
+
+A tabela abaixo mostra a abundância de $`r St`$ peixes captradas na zona de arrebentação da Baís de Santos em 2015. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de $200$ m na zona de arrebentação das ondas seguindo a direção da linha da costa. No total foram $`r n`$ amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras `r nverao` foram tomadas no `r epl[2]` de $2015$ e as outras  `r ninverno` no `r epl[1]` de $2015$. As demais colunas mostram o número de indivíduos de cada espécie obtido nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
+
+Vamos utilizar esta tabela como exemplo para calcularmos as diversidades $\alpha$, $\beta$ e $\gamma$.
+
+Os cálculos serão feitos no programa R. Antes de iniciar, é importante preparar seu ambiente de trabalho. Iremos utilizar o R-Studio como ambiente de programação, mas você pode utilizar outro de sua vontade. A seguir faremos toda a preparação necessárias, mas pode ser útil consultar os links abaixo:
+
++ <a href="https://fcopf.github.io/probest-introR/" target="_blank">Introdução ao Ambiente R de Programação - Capítulos 1 e 2</a>
+
++ <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulo 2 e 11</a>
+
+## Preparando o ambiente de trabalho
+
+1. Após abrir o R-Studio e criar um arquivo, direcionane R para a pasta de trabalho em quie você irá trabalhar. Por exemplo:
+
+```{r echo = TRUE, eval = FALSE}
+setwd('C:/Users/usuario/Documents/Bio_II_2021' )
+```
+
+2. Faça o download da base de dados que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível no link <a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Baia_santos.csv</a>
+
+Ao clicar no link, copie os dados (Ctrl + C), abra um bloco de notas e colo (Ctrl + C). Salve o arquivo com o nome **Baia_santos.csv**.
+
+3. Caso ainda não tenha feito, instales os segintes pacotes com o comando abaixo:
+
+```{r echo = TRUE, eval = FALSE}
+install.packages(c('tidyverse', 'vegan', 'patchwork', 'readxl'))
+```
+
+4. E habilite os pacotes
+
+```{r echo = TRUE, eval = FALSE}
+library(tidyverse)
+library(vegan)
+library(patchwork)
+library(readxl)
+```
+
+> Os pacotes precisam ser instalados somente uma vez. No entanto, sempre que você fechar e abrir o R-Studio, precisará habilitá-los novamente.
+
+5. Importe a base de dados para o R-Studio
+
+
+```{r echo = TRUE, eval = FALSE}
+pe = read_excel('Baia_santos.csv')
+```
+
+## Diversidade $\alpha$
+
+A diversidade $\alpha$ se refere às diversidades registradas localente,isto é, em cada uma das amostras. Após obtermos estas medidas, nos interessa entender qual a diversidade média. Como dizemos no capítulo anterior, a diversidade pode ser caracterizada por diferentes índices. Os dois componentes principais do que entendermos por diversidade são: **riqueza de espécies** e **equabilidade** (ou uniformidade). O primeiro refere-se simplesmente ao número de espécies em uma amostra. Se contarmos o número de espécies presentes na primeira linha da tabela por exemplo, encontraremos $`r sum(pe[1,-1] > 0)`$ espécies (`r paste(colnames(pe[,-1])[pe[1,-1] > 0], collapse = ', ')`). Já na última amostra encontramos somente $`r sum(pe[12,-1] > 0)`$ espécies (`r paste(colnames(pe[,-1])[pe[12,-1] > 0], collapse = ', ')`).
+
+O segundo componente da diversidade se refere ao padrão de distribuição das abundâncias relativas. Se todas as espécies forem *igualmente* abundantes, a uniformidade é máxima. Por outro lado, se uma ou poucas espécies são muito abundantes e todas as demais raras (compostas por poucos indivíduos), a uniformidade é baixa (= dominância alta). Na linha $3$ por exemplo, uma das espécies é composta por $`r max(pe[3,-1])`$ individuos, enquanto a segunda espécie mais abundante apareceu com somente $`r sort(as.numeric(pe[3,-1]), de = T)[2]`$.
+
+Os índices de diversidade combinam a riqueza de espécies e equabilidade, para nos fonecer uma medida-resumo para as comunidades locais.
+
+Como temos amostras tomadas em dois períodos nos interessa justamente comparar estes períodos em função das medidas de diversidade nas diferentes escalas.
+
+
+```{r}
+pe %>% 
+  kableExtra::kable()
+```
+
+
+
+```{r echo = FALSE}
+rm(list = ls())
+```
+

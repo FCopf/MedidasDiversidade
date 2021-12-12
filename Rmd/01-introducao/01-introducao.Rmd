@@ -1,0 +1,284 @@
+# Medidas de diversidade: introdução {#introdiversidade}
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(message = FALSE, echo = FALSE, warnings = FALSE)
+```
+
+Geralmente entendemos por *diverso*, um ambiente em que existem muitas espécies. Uma floresta tropical é um ambiente mais diverso que uma floresta temperada e um trecho de mata atlântica mais diverso que um ambientre desértico, pois os primeiros contém mais espécies. O número de espécies existentes em uma região, denominado de **riqueza de espécies (S)** é um componente fundamental da diversidade em comunidades ecológicas.
+
+Considere as duas comunidades abaixo:
+
+```{r, echo = FALSE, message = FALSE}
+sp = c('blue', 'brown', 'green', 'red', 'deeppink', 'darkorchid', 'black', 'darkgreen')
+N = 100
+S1 = 8
+S2 = 4
+# 
+# for (i in 1:length(sp)){
+#   p = rfishdraw::fish_draw(color = sp[i]) + theme_void()
+#   ggsave(filename = paste('imagens/fish_', sp[i], '.png', sep = ''),
+#          plot = p)
+# }
+genero = 'Ptecechymus'
+pos1 = data.frame(Genero = rep(genero,S1),
+                  x = c(30,35,57,40,20,50,70,60),
+                 y = c(40,10,20,60,68,80,76,49),
+                 cor = sp,
+                 image = paste('imagens/fish_colored/',
+                               dir('imagens/fish_colored/'), sep = ''),
+                 Nbs = round(drbs(x = 1:S1,N = N, S = S1) * N),
+                 Ngs = round(dgs(1:S1, k = 0.7, S = S1) * N)) %>% 
+  mutate(Especie = paste(Genero, ' ', cor, 's', sep = ''))
+pos1$Nbs1[8] = pos1$Nbs1[8] + 1
+
+exc = c(4,5, 7,8)
+S2 = length(sp[-exc])
+pos2 = pos1[-exc,] %>% 
+  select(Genero:image,Especie) %>% 
+  mutate(Nbs = round(drbs(x = 1:S2,N = N, S = S2) * N),
+         Ngs = round(dgs(1:S2, k = 0.9, S = S2) * N))
+
+com1 = ggplot(pos1, aes(x, y)) +
+  geom_image(aes(image = image), size = 0.2) +
+  coord_cartesian(xlim = c(10,90), ylim = c(0,90)) +
+  labs(title = 'Comunidade 1', subtitle = bquote("S" == .(nrow(pos1)) ~ ' espécies')) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1))
+
+com2 = ggplot(pos2, aes(x, y)) +
+  geom_image(aes(image = image), size = 0.2) +
+  coord_cartesian(xlim = c(10,90), ylim = c(0,90)) +
+  labs(title = 'Comunidade 2', subtitle = bquote("S" == .(nrow(pos2)) ~ ' espécies')) +
+  theme_void() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1))
+
+```
+
+```{r fig.align='center', fig.height=4, fig.width=8}
+com1 | com2
+```
+
+Se medirmos a diversidade de uma comunidade por meio da riqueza de espécies, a comunidade $1$ ($S = `r nrow(pos1)`$) é duas vezes mais diversa que a comunidade $2$ ($S = `r nrow(pos2)`$). Entretanto, outro componente fundamental do que compreendemos por diversidade de espécies tem relação com o **grau de uniformidade** ou **equabilidade** das abundâncias relativas. Se duas comunidades têm a mesma riqueza, será mais diversa aquela em que as abundâncias relativas forem mais uniformes entre as espécies. 
+
+Suponha duas comunidades com $5$ espécies e $100$ indivíduos. Na comunidade A todas as espécies têm $20$ indivíduos, enquanto na comunidade B, a espécie mais abundante tem $96$ indivíduos e todas as restantes somente $1$ indivíduo cada. A comunidade A será mais diversa pois tem uma distribuição de abundância relativa mais uniforme, enquanto a segunda comunidade é menos uniforme pois apresenta elevada **dominância**. 
+
+```{r}
+chbs1 = ggplot(pos1) + 
+  aes(x = reorder(Especie, -Nbs),
+      y = Nbs, 
+      fill = reorder(cor, -Nbs), 
+      color = reorder(cor, -Nbs)) +
+  geom_bar(stat = 'identity') +
+  geom_image(aes(image = image, y = Nbs + 2), size = 0.1) +
+  scale_fill_manual(values = pos1$cor) +
+  scale_color_manual(values = pos1$cor) +
+  labs(y = 'Número de indivíduos', x = '',
+       subtitle = 'Alta riqueza / Baixa dominância') +
+  coord_cartesian(xlim = c(1, 8)) +
+  theme_classic(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.8,hjust = 1),
+        legend.position = "none",
+        axis.text.y = element_blank(),
+        plot.subtitle = element_text(hjust = 0.5))
+
+chgs1 = ggplot(pos1) + 
+  aes(x = reorder(Especie, -Ngs),
+      y = Ngs, 
+      fill = reorder(cor, -Ngs), 
+      color = reorder(cor, -Ngs)) +
+  geom_bar(stat = 'identity') +
+  geom_image(aes(image = image, y = Ngs + 2), size = 0.1) +
+  scale_fill_manual(values = pos1$cor) +
+  scale_color_manual(values = pos1$cor) +
+  labs(y = 'Número de indivíduos', x = '',
+       subtitle = 'Alta riqueza / Baixa dominância') +
+  coord_cartesian(xlim = c(1, 8)) +
+  theme_classic(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.8,hjust = 1),
+        legend.position = "none",
+        axis.text.y = element_blank(),
+        plot.subtitle = element_text(hjust = 0.5))
+
+chbs2 = ggplot(pos2) + 
+  aes(x = reorder(Especie, -Nbs),
+      y = Nbs, 
+      fill = reorder(cor, -Nbs), 
+      color = reorder(cor, -Nbs)) +
+  geom_bar(stat = 'identity') +
+  geom_image(aes(image = image, y = Nbs + 2), size = 0.1) +
+  scale_fill_manual(values = pos2$cor) +
+  scale_color_manual(values = pos2$cor) +
+  labs(y = 'Número de indivíduos', x = '',
+       subtitle = 'Baixa riqueza / Baixa dominância') +
+  coord_cartesian(xlim = c(1, 8)) +
+  theme_classic(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.8,hjust = 1),
+        legend.position = "none",
+        axis.text.y = element_blank(),
+        plot.subtitle = element_text(hjust = 0.5))
+
+chgs2 = ggplot(pos2) + 
+  aes(x = reorder(Especie, -Ngs),
+      y = Ngs, 
+      fill = reorder(cor, -Ngs), 
+      color = reorder(cor, -Ngs)) +
+  geom_bar(stat = 'identity') +
+  geom_image(aes(image = image, y = Ngs + 2), size = 0.1) +
+  scale_fill_manual(values = pos2$cor) +
+  scale_color_manual(values = pos2$cor) +
+  labs(y = 'Número de indivíduos', x = '',
+       subtitle = 'Baixa riqueza / Alta dominância') +
+  coord_cartesian(xlim = c(1, 8)) +
+  theme_classic(base_size = 8) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.8,hjust = 1),
+        legend.position = "none",
+        axis.text.y = element_blank(),
+        plot.subtitle = element_text(hjust = 0.5))
+```
+
+Ao combinarmos estes dois componentes podemos encontrar diferentes tipos de comunidades: i - comunidades com baixa riqueza de espécies e baixa dominância, ii - comunidades com baixa riqueza de espécies e alta dominância; iii - comunidades com alta riqueza de espécies e baixa dominância ou iii - comunidades com alta riqueza de espécies e alta dominância.
+
+```{r}
+Dbs1 <- vegan::diversity(pos1$Nbs, index = 'simpson')
+Dgs1 <- vegan::diversity(pos1$Ngs, index = 'simpson')
+Dbs2 <- vegan::diversity(pos2$Nbs, index = 'simpson')
+Dgs2 <- vegan::diversity(pos2$Ngs, index = 'simpson')
+```
+
+```{r fig.align='center', fig.height=8, fig.width=8}
+g1 = chbs2 + labs(title = "I") + 
+   annotate(geom = 'text',
+            x = 5, y = 53,
+            label = paste('1 - D = ', round(Dbs2,2), sep = ''))
+g2 = chgs2 + labs(title = "II")  + 
+   annotate(geom = 'text',
+            x = 5, y = 81,
+            label = paste('1 - D = ', round(Dgs2,2), sep = ''))
+g3 = chbs1 + labs(title = "III")  + 
+   annotate(geom = 'text',
+            x = 5, y = 35,
+            label = paste('1 - D = ', round(Dbs1,2), sep = ''))
+g4 = chgs1 + labs(title = "IV") + 
+   annotate(geom = 'text',
+            x = 5, y = 71,
+            label = paste('1 - D = ', round(Dgs1,2), sep = ''))
+
+(g1 | g2) / (g3 | g4)
+```
+
+## Indices de diversidade
+
+Os índices de diversidade capturam os dois componentes (riqueza de espécies e uniformidade) em uma única medida. Neste sentido, um elevado valor de diversidade pode ocorrer devido à elevada riqueza ou a elevada uniformidade (= baixa dominância).
+
+Abaixo irei descrever um deles, com propriedades bem conhecidas: o **índice de Simpson**.
+
+**Índice de diversidade de Simpson**
+
+Simpson (1949 - <a href="https://www.nature.com/articles/163688a0.pdf" target="_blank">Measurement of diversity</a>) definiu uma medida de diversidade a partir da probabilidade de que dois indivíduos retirados aleatoriamente de uma comunidade fossem pertencentes à mesma espécie. Para uma comunidade com número finito de indivíduos esta probabilidade pode ser dada por:
+
+$$D = \sum_{i = 1}^{S}\left(\frac{n_i(n_1 - 1)}{N(N-1)}\right)$$
+
+Se existe uma alta dominância, é **altamente provavel** que dois indivíduos retirados ao acaso sejam da mesma espécie. Deste modo, $D$ dimuniu quando a comunidade é muito diversa. Para resolver esta questão comumente representado o índice de diversidade de Simpson por $1 - D$ ou $1/D$. O índice de Simpson captura a variância na distribuição de abundância da espécie, sobretudo para valores de riqueza acima de $10$ espécies (Maguran, 2004).
+
+Para as comunidades representadas nas figuras acima temos:
+
++ Comunidade I: $1 - D = `r round(Dbs2,2)`$
+
++ Comunidade II: $1 - D = `r round(Dgs2,2)`$
+
++ Comunidade III: $1 - D = `r round(Dbs1,2)`$
+
++ Comunidade IV: $1 - D = `r round(Dgs1,2)`$
+
+A comunidade $III$ é a mais diversa pois possui elevada riqueza e alta uniformidade, enquanto a comunidade $II$ é a menos diversa pois possui menor riqueza e baixa uniformidade. Finalmente, as comunidades $I$ e $IV$ ficam no meio do caminho pois possuem baixa riqueza mas alta uniformidade ou vice-versa.
+
+**Índice de Equabilidade de Simpson**
+
+Uma vez que $D$ combina riqueza com uniformidade, poderíamos buscar uma medida que evidenciasse somente a última (uma vez que a riqueza é simples de se obter). Se utilizarmos a diversidade de Simpson, teríamos a medida de **equabilidade de Simpson** como:
+
+$$E_{1/D} = \frac{1/D}{S}$$
+
+$E_{1/D}$ varia entre $0$ e $1$ e não é sensível á riqueza de espécies.
+
+Existe uma variedade de índices de diversidade e equabilidade. Para uma apresentação detalhada @magurran2011medindo e uma discussão da relação entre riqueza, diversidade e equabilidade veja @melo2008ganhamos (<a href="https://www.scielo.br/j/bn/a/V65vczpkpxYBGVS7Hf6sVSp/?lang=pt" target="_blank">acesse aqui</a>). 
+
+## Diversidade na paisagem
+
+Ao olharmos para uma paisagem perceberemos que invariavelmente, há algum grau de variabilidade na estrutura ambiental, sendo possivel muitas vezes reconhecer **manchas de habitats**. Considere riachos em uma bacia costeira típica do litoral de São Paulo. Podemos encontar trechos com estruturas de hábitats altamente variáveis em termos tipo de substrato (rochoso *vs* arenoso), largura, velocidade de corrente, sombreamento, etc.
+
+```{r fig.align='center', fig.height=8, fig.width=8}
+IMG_0078 <- image_read('imagens/riachos/IMG_0078.JPG') %>% 
+  image_scale('600x600')
+IMG_0059 <- image_read('imagens/riachos/IMG_0059.JPG') %>% 
+  image_scale('600x600')
+IMG_0054 <- image_read('imagens/riachos/IMG_0054.JPG') %>% 
+  image_scale('600x600')
+IMG_0061 <- image_read('imagens/riachos/IMG_0061.JPG') %>% 
+  image_scale('600x600')
+
+img1 = image_append(c(IMG_0078, IMG_0061), stack = TRUE)
+img2 = image_append(c(IMG_0054, IMG_0059), stack = TRUE)
+
+image_append(c(img1, img2), stack = FALSE)
+```
+
+É esperado que a composição de espécies presentes em cada um destes locais seja diferente, o que levará a variações nos padrões de riqueza e uniformidade das comunidades. O mesmo vale para qualquer ambiente em que seja possível verificar alguma variação espacial na estrutura dos habitats. Algumas destas variações ocorrem em forma de gradiente ambiental. Por exemplo, há um gradiente de umidade e de exposição às ondas que vai do trecho superior (supral-itoral) ao trecho inferior (infra-litoral) de faixas de areia em praias. É esperado que a fauna que habite estes ambientes varie ao longo deste gradiente.
+
+Mesmo que não haja um gradiente ambiental forte, ainda é esperado que devido à dinâmicas individuais de nascimento, morte, imigração, emigração, as espécies se distribuam de forma heterogênea na paisagem. Portanto, se queremos caracterizar a diveridade em uma determinada região, devemos amostrar diferentes parcelas na paisagem, o que nos leva a buscar reconhecer padrões de diversidade em diferentes escalas.
+
+Se tivermos na paisagem uma $5$ comunidades diferentes, cada um com $5$ espécies sem nenhuma sobreposição, a diversidade da paisagem será maior ($S = 25$) que as diversidades locais ($S = 5$).
+
+
+Se por outro lado, todas as comunidades tiverem exatamente as mesmas espécies, ao combiná-las, ainda teremos $S = 5$ espécies na paisagem.
+
+Muitas vezes não é possivel amostrar um hábitat por completo (por exemplo, toda a faixa de areia), ou ainda pode não ser possível sequer reconhecer manchas de hábitas. Ainda assim, o protocolo de amostragem será composto por umnidades amostrais que se combinam para formar a amostra completa.
+
+Imagine a amostragem de peixes na zona de arrebentação de praia da Baía de Santos. Cada amostra consiste do arrasto ao longo de $200$ m. Ainda que não seja possível reconhecer limites físcos comunidades encontradas em cada unidade amostral, continua válida a ideia de que a diversidade na Baía de Santos será composta da combinação entre as comunidades provinientes de cada arrasto.
+
+```{r fig.align='center'}
+image_read('imagens/arrasto/IMG_0069.JPG')%>% 
+  image_scale('600x600')
+```
+
+Para organizar a diversidade em diferentes escalas, defini-se como diversidade **alfa ($\alpha$)** a diversidade de uma única unidade amostral e como diversidade **gama ($\gamma$)** a combinação detodas as diversidades locais na paisagem.
+
+
+
+```{r fig.align='center', fig.cap = "A: Diversidade gama total (5 espécies) igual alfa locais (5 espécies). B: Diversidade gama total (25 espécies) maior alfa locais (5 espécies)."}
+bs1 = image_read('imagens/Baia_santos1.png') %>% 
+  image_scale('800x800') %>% 
+  image_annotate("A", size = 50, color = "black", 
+                 boxcolor = "white",
+                 location = "+0+0")
+bs2 = image_read('imagens/Baia_santos2.png') %>% 
+  image_scale('800x800') %>% 
+  image_annotate("B", size = 50, color = "black", 
+                 boxcolor = "white",
+                 location = "+0+0")
+
+image_append(c(bs1, bs2), stack = FALSE)
+
+```
+
+Acima na figura da esquerda (Figura 1.1A) temos cinco amostras, cada uma contendo as mesmas $5$ espécies. Ao combinarmos todas as amostras ainda teremos as mesmas espécies, de modo que as diversidades $\alpha = \gamma = 5$ espécies. 
+
+Na figura da direita (Figura 1.1B) também temos cinco amostras, porém cada uma contém $5$ espécies totalmente diferentes das demais amostras. Neste caso, a diversidade na paisagem será $\gamma = 25$ espécies, enquanto as doversidades locais conterão $\alpha = 5$ espécies.
+
+Para diferenciar situações destes tipo definimos a **beta ($\beta$)** que mede a diferença entre as diversidades $\alpha$ e $\gamma$. Nos exemplos acima temos portanto que a Figura 1.1A descreve uma situação com **baixa diversidade $\beta$**, enquanto a Figura 1.1B descreve uma situação com **alta diversidade $\beta$**
+
+No capítulo seguinte iremos descrever como podemos medir a diversidade de espécies nas diferentes escalas.
+
+## Medindo as diversidades $\alpha$, $\beta$ e $\gamma$
+
+
+
+A tabela abaixo mostra a abundância de $$
+
+```{r echo = FALSE}
+rm(list = ls())
+```
+

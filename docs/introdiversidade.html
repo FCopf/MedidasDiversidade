@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 1 Medidas de diversidade: introdução | Medidas de diversidade</title>
+  <meta name="description" content="Capítulo 1 Medidas de diversidade: introdução | Medidas de diversidade" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 1 Medidas de diversidade: introdução | Medidas de diversidade" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Capítulo 1 Medidas de diversidade: introdução | Medidas de diversidade" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 1 Medidas de diversidade: introdução | Medidas de diversidade" />
+  
+  <meta name="twitter:description" content="Capítulo 1 Medidas de diversidade: introdução | Medidas de diversidade" />
+  
+
+<meta name="author" content="Fabio Cop Ferreira" />
+<meta name="author" content="fabiocopf@gmail.com; fcferreira@unifesp.br" />
+<meta name="author" content="Instituto do Mar, Universidade Federal de São Paulo" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="diversidader.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Medidas de diversidade</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="part"><span><b>I Medidas de diversidade</b></span></li>
+<li class="chapter" data-level="1" data-path="introdiversidade.html"><a href="introdiversidade.html"><i class="fa fa-check"></i><b>1</b> Medidas de diversidade: introdução</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introdiversidade.html"><a href="introdiversidade.html#indices-de-diversidade"><i class="fa fa-check"></i><b>1.1</b> Indices de diversidade</a></li>
+<li class="chapter" data-level="1.2" data-path="introdiversidade.html"><a href="introdiversidade.html#diversidade-na-paisagem"><i class="fa fa-check"></i><b>1.2</b> Diversidade na paisagem</a></li>
+<li class="chapter" data-level="1.3" data-path="introdiversidade.html"><a href="introdiversidade.html#medindo-as-diversidades-alpha-beta-e-gamma"><i class="fa fa-check"></i><b>1.3</b> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="diversidader.html"><a href="diversidader.html"><i class="fa fa-check"></i><b>2</b> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="diversidader.html"><a href="diversidader.html#preparando-o-ambiente-de-trabalho"><i class="fa fa-check"></i><b>2.1</b> Preparando o ambiente de trabalho</a></li>
+<li class="chapter" data-level="2.2" data-path="diversidader.html"><a href="diversidader.html#diversidade-alpha"><i class="fa fa-check"></i><b>2.2</b> Diversidade <span class="math inline">\(\alpha\)</span></a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Medidas de diversidade</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introdiversidade" class="section level1" number="1">
+<h1><span class="header-section-number">Capítulo 1</span> Medidas de diversidade: introdução</h1>
+<p>Geralmente entendemos por <em>diverso</em>, um ambiente em que existem muitas espécies. Uma floresta tropical é um ambiente mais diverso que uma floresta temperada e um trecho de mata atlântica mais diverso que um ambientre desértico, pois os primeiros contém mais espécies. O número de espécies existentes em uma região, denominado de <strong>riqueza de espécies (S)</strong> é um componente fundamental da diversidade em comunidades ecológicas.</p>
+<p>Considere as duas comunidades abaixo:</p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>Se medirmos a diversidade de uma comunidade por meio da riqueza de espécies, a comunidade <span class="math inline">\(1\)</span> (<span class="math inline">\(S = 8\)</span>) é duas vezes mais diversa que a comunidade <span class="math inline">\(2\)</span> (<span class="math inline">\(S = 4\)</span>). Entretanto, outro componente fundamental do que compreendemos por diversidade de espécies tem relação com o <strong>grau de uniformidade</strong> ou <strong>equabilidade</strong> das abundâncias relativas. Se duas comunidades têm a mesma riqueza, será mais diversa aquela em que as abundâncias relativas forem mais uniformes entre as espécies.</p>
+<p>Suponha duas comunidades com <span class="math inline">\(5\)</span> espécies e <span class="math inline">\(100\)</span> indivíduos. Na comunidade A todas as espécies têm <span class="math inline">\(20\)</span> indivíduos, enquanto na comunidade B, a espécie mais abundante tem <span class="math inline">\(96\)</span> indivíduos e todas as restantes somente <span class="math inline">\(1\)</span> indivíduo cada. A comunidade A será mais diversa pois tem uma distribuição de abundância relativa mais uniforme, enquanto a segunda comunidade é menos uniforme pois apresenta elevada <strong>dominância</strong>.</p>
+<p>Ao combinarmos estes dois componentes podemos encontrar diferentes tipos de comunidades: i - comunidades com baixa riqueza de espécies e baixa dominância, ii - comunidades com baixa riqueza de espécies e alta dominância; iii - comunidades com alta riqueza de espécies e baixa dominância ou iii - comunidades com alta riqueza de espécies e alta dominância.</p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div id="indices-de-diversidade" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Indices de diversidade</h2>
+<p>Os índices de diversidade capturam os dois componentes (riqueza de espécies e uniformidade) em uma única medida. Neste sentido, um elevado valor de diversidade pode ocorrer devido à elevada riqueza ou a elevada uniformidade (= baixa dominância).</p>
+<p>Abaixo irei descrever um deles, com propriedades bem conhecidas: o <strong>índice de Simpson</strong>.</p>
+<p><strong>Índice de diversidade de Simpson</strong></p>
+<p>Simpson (1949 - <a href="https://www.nature.com/articles/163688a0.pdf" target="_blank">Measurement of diversity</a>) definiu uma medida de diversidade a partir da probabilidade de que dois indivíduos retirados aleatoriamente de uma comunidade fossem pertencentes à mesma espécie. Para uma comunidade com número finito de indivíduos esta probabilidade pode ser dada por:</p>
+<p><span class="math display">\[D = \sum_{i = 1}^{S}\left(\frac{n_i(n_1 - 1)}{N(N-1)}\right)\]</span></p>
+<p>Se existe uma alta dominância, é <strong>altamente provavel</strong> que dois indivíduos retirados ao acaso sejam da mesma espécie. Deste modo, <span class="math inline">\(D\)</span> dimuniu quando a comunidade é muito diversa. Para resolver esta questão comumente representado o índice de diversidade de Simpson por <span class="math inline">\(1 - D\)</span> ou <span class="math inline">\(1/D\)</span>. O índice de Simpson captura a variância na distribuição de abundância da espécie, sobretudo para valores de riqueza acima de <span class="math inline">\(10\)</span> espécies (Maguran, 2004).</p>
+<p>Para as comunidades representadas nas figuras acima temos:</p>
+<ul>
+<li><p>Comunidade I: <span class="math inline">\(1 - D = 0.63\)</span></p></li>
+<li><p>Comunidade II: <span class="math inline">\(1 - D = 0.18\)</span></p></li>
+<li><p>Comunidade III: <span class="math inline">\(1 - D = 0.79\)</span></p></li>
+<li><p>Comunidade IV: <span class="math inline">\(1 - D = 0.46\)</span></p></li>
+</ul>
+<p>A comunidade <span class="math inline">\(III\)</span> é a mais diversa pois possui elevada riqueza e alta uniformidade, enquanto a comunidade <span class="math inline">\(II\)</span> é a menos diversa pois possui menor riqueza e baixa uniformidade. Finalmente, as comunidades <span class="math inline">\(I\)</span> e <span class="math inline">\(IV\)</span> ficam no meio do caminho pois possuem baixa riqueza mas alta uniformidade ou vice-versa.</p>
+<p><strong>Índice de Equabilidade de Simpson</strong></p>
+<p>Uma vez que <span class="math inline">\(D\)</span> combina riqueza com uniformidade, poderíamos buscar uma medida que evidenciasse somente a última (uma vez que a riqueza é simples de se obter). Se utilizarmos a diversidade de Simpson, teríamos a medida de <strong>equabilidade de Simpson</strong> como:</p>
+<p><span class="math display">\[E_{1/D} = \frac{1/D}{S}\]</span></p>
+<p><span class="math inline">\(E_{1/D}\)</span> varia entre <span class="math inline">\(0\)</span> e <span class="math inline">\(1\)</span> e não é sensível á riqueza de espécies.</p>
+<p>Existe uma variedade de índices de diversidade e equabilidade. Para uma apresentação detalhada <span class="citation"><a href="#ref-magurran2011medindo" role="doc-biblioref">Magurran</a> (<a href="#ref-magurran2011medindo" role="doc-biblioref">2011</a>)</span> e uma discussão da relação entre riqueza, diversidade e equabilidade veja <span class="citation"><a href="#ref-melo2008ganhamos" role="doc-biblioref">Melo</a> (<a href="#ref-melo2008ganhamos" role="doc-biblioref">2008</a>)</span> (<a href="https://www.scielo.br/j/bn/a/V65vczpkpxYBGVS7Hf6sVSp/?lang=pt" target="_blank">acesse aqui</a>).</p>
+</div>
+<div id="diversidade-na-paisagem" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Diversidade na paisagem</h2>
+<p>Ao olharmos para uma paisagem perceberemos que invariavelmente, há algum grau de variabilidade na estrutura ambiental, sendo possivel muitas vezes reconhecer <strong>manchas de habitats</strong>. Considere riachos em uma bacia costeira típica do litoral de São Paulo. Podemos encontar trechos com estruturas de hábitats altamente variáveis em termos tipo de substrato (rochoso <em>vs</em> arenoso), largura, velocidade de corrente, sombreamento, etc.</p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-8-1.png" width="600" style="display: block; margin: auto;" /></p>
+<p>É esperado que a composição de espécies presentes em cada um destes locais seja diferente, o que levará a variações nos padrões de riqueza e uniformidade das comunidades. O mesmo vale para qualquer ambiente em que seja possível verificar alguma variação espacial na estrutura dos habitats. Algumas destas variações ocorrem em forma de gradiente ambiental. Por exemplo, há um gradiente de umidade e de exposição às ondas que vai do trecho superior (supral-itoral) ao trecho inferior (infra-litoral) de faixas de areia em praias. É esperado que a fauna que habite estes ambientes varie ao longo deste gradiente.</p>
+<p>Mesmo que não haja um gradiente ambiental forte, ainda é esperado que devido à dinâmicas individuais de nascimento, morte, imigração, emigração, as espécies se distribuam de forma heterogênea na paisagem. Portanto, se queremos caracterizar a diveridade em uma determinada região, devemos amostrar diferentes parcelas na paisagem, o que nos leva a buscar reconhecer padrões de diversidade em diferentes escalas.</p>
+<p>Se tivermos na paisagem uma <span class="math inline">\(5\)</span> comunidades diferentes, cada um com <span class="math inline">\(5\)</span> espécies sem nenhuma sobreposição, a diversidade da paisagem será maior (<span class="math inline">\(S = 25\)</span>) que as diversidades locais (<span class="math inline">\(S = 5\)</span>).</p>
+<p>Se por outro lado, todas as comunidades tiverem exatamente as mesmas espécies, ao combiná-las, ainda teremos <span class="math inline">\(S = 5\)</span> espécies na paisagem.</p>
+<p>Muitas vezes não é possivel amostrar um hábitat por completo (por exemplo, toda a faixa de areia), ou ainda pode não ser possível sequer reconhecer manchas de hábitas. Ainda assim, o protocolo de amostragem será composto por umnidades amostrais que se combinam para formar a amostra completa.</p>
+<p>Imagine a amostragem de peixes na zona de arrebentação de praia da Baía de Santos. Cada amostra consiste do arrasto ao longo de <span class="math inline">\(200\)</span> m. Ainda que não seja possível reconhecer limites físcos comunidades encontradas em cada unidade amostral, continua válida a ideia de que a diversidade na Baía de Santos será composta da combinação entre as comunidades provinientes de cada arrasto.</p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-9-1.png" width="300" style="display: block; margin: auto;" /></p>
+<p>Para organizar a diversidade em diferentes escalas, defini-se como diversidade <strong>alfa (<span class="math inline">\(\alpha\)</span>)</strong> a diversidade de uma única unidade amostral e como diversidade <strong>gama (<span class="math inline">\(\gamma\)</span>)</strong> a combinação detodas as diversidades locais na paisagem.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="medidas-diversidade_files/figure-html/unnamed-chunk-10-1.png" alt="A: Diversidade gama total (5 espécies) igual alfa locais (5 espécies). B: Diversidade gama total (25 espécies) maior alfa locais (5 espécies)." width="800" />
+<p class="caption">
+Figure 1.1: A: Diversidade gama total (5 espécies) igual alfa locais (5 espécies). B: Diversidade gama total (25 espécies) maior alfa locais (5 espécies).
+</p>
+</div>
+<p>Acima na figura da esquerda (Figura 1.1A) temos cinco amostras, cada uma contendo as mesmas <span class="math inline">\(5\)</span> espécies. Ao combinarmos todas as amostras ainda teremos as mesmas espécies, de modo que as diversidades <span class="math inline">\(\alpha = \gamma = 5\)</span> espécies.</p>
+<p>Na figura da direita (Figura 1.1B) também temos cinco amostras, porém cada uma contém <span class="math inline">\(5\)</span> espécies totalmente diferentes das demais amostras. Neste caso, a diversidade na paisagem será <span class="math inline">\(\gamma = 25\)</span> espécies, enquanto as doversidades locais conterão <span class="math inline">\(\alpha = 5\)</span> espécies.</p>
+<p>Para diferenciar situações destes tipo definimos a <strong>beta (<span class="math inline">\(\beta\)</span>)</strong> que mede a diferença entre as diversidades <span class="math inline">\(\alpha\)</span> e <span class="math inline">\(\gamma\)</span>. Nos exemplos acima temos portanto que a Figura 1.1A descreve uma situação com <strong>baixa diversidade <span class="math inline">\(\beta\)</span></strong>, enquanto a Figura 1.1B descreve uma situação com <strong>alta diversidade <span class="math inline">\(\beta\)</span></strong></p>
+<p>No capítulo seguinte iremos descrever como podemos medir a diversidade de espécies nas diferentes escalas.</p>
+</div>
+<div id="medindo-as-diversidades-alpha-beta-e-gamma" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span></h2>
+<p>A tabela abaixo mostra a abundância de $$</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-magurran2011medindo" class="csl-entry">
+Magurran, Anne E. 2011. <span>“Medindo a Diversidade Biol<span>ó</span>gica.”</span> <em>Curitiba: Editora Da UFPR</em> 261.
+</div>
+<div id="ref-melo2008ganhamos" class="csl-entry">
+Melo, Adriano Sanches. 2008. <span>“O Que Ganhamos ’Confundindo’ Riqueza de Espécies e Equabilidade Em Um Índice de Diversidade?”</span> <em>Biota Neotropica</em> 8: 21–27.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="diversidader.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["medidas-diversidade.pdf", "medidas-diversidade.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+--- 
+title: "Medidas de diversidade"
+author: 
+  - Fabio Cop Ferreira
+  - fabiocopf@gmail.com; fcferreira@unifesp.br
+  - Instituto do Mar, Universidade Federal de São Paulo
+date: "Última atualização em `r format(Sys.Date(), '%d/%m/%Y')`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+description: "Medidas de diversidade"
+---
+
+# Índice {-}
+
+
+
+
+```{r include=FALSE, fig.width=5, fig.align='center'}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+
+```
+
+```{r setupP1, include=FALSE, message = FALSE, echo = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
+library(tidyverse)
+library(vegan)
+library(magick)
+library(rfishdraw)
+library(ggimage)
+library(patchwork)
+library(sads)
+library(RColorBrewer)
+library(wesanderson)
+library(kableExtra)
+```

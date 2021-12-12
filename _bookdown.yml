@@ -1,0 +1,14 @@
+output_dir: "docs"
+book_filename: "medidas-diversidade"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Capítulo "
+new_session: no
+clean: ["packages.bib"]
+rmd_files: ["index.Rmd"
+
+            ,"Rmd/01-introducao/00-PART-introducao.Rmd"
+            ,"Rmd/01-introducao/01-introducao.Rmd"
+            ,"Rmd/01-introducao/02-diversidader.Rmd"
+             ]

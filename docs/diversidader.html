@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 2 Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\) | Medidas de diversidade</title>
+  <meta name="description" content="Capítulo 2 Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\) | Medidas de diversidade" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 2 Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\) | Medidas de diversidade" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Capítulo 2 Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\) | Medidas de diversidade" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 2 Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\) | Medidas de diversidade" />
+  
+  <meta name="twitter:description" content="Capítulo 2 Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\) | Medidas de diversidade" />
+  
+
+<meta name="author" content="Fabio Cop Ferreira" />
+<meta name="author" content="fabiocopf@gmail.com; fcferreira@unifesp.br" />
+<meta name="author" content="Instituto do Mar, Universidade Federal de São Paulo" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introdiversidade.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Medidas de diversidade</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Índice</a></li>
+<li class="part"><span><b>I Medidas de diversidade</b></span></li>
+<li class="chapter" data-level="1" data-path="introdiversidade.html"><a href="introdiversidade.html"><i class="fa fa-check"></i><b>1</b> Medidas de diversidade: introdução</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introdiversidade.html"><a href="introdiversidade.html#indices-de-diversidade"><i class="fa fa-check"></i><b>1.1</b> Indices de diversidade</a></li>
+<li class="chapter" data-level="1.2" data-path="introdiversidade.html"><a href="introdiversidade.html#diversidade-na-paisagem"><i class="fa fa-check"></i><b>1.2</b> Diversidade na paisagem</a></li>
+<li class="chapter" data-level="1.3" data-path="introdiversidade.html"><a href="introdiversidade.html#medindo-as-diversidades-alpha-beta-e-gamma"><i class="fa fa-check"></i><b>1.3</b> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="diversidader.html"><a href="diversidader.html"><i class="fa fa-check"></i><b>2</b> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span></a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="diversidader.html"><a href="diversidader.html#preparando-o-ambiente-de-trabalho"><i class="fa fa-check"></i><b>2.1</b> Preparando o ambiente de trabalho</a></li>
+<li class="chapter" data-level="2.2" data-path="diversidader.html"><a href="diversidader.html#diversidade-alpha"><i class="fa fa-check"></i><b>2.2</b> Diversidade <span class="math inline">\(\alpha\)</span></a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Medidas de diversidade</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="diversidader" class="section level1" number="2">
+<h1><span class="header-section-number">Capítulo 2</span> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span></h1>
+<p>A tabela abaixo mostra a abundância de <span class="math inline">\(10\)</span> peixes captradas na zona de arrebentação da Baís de Santos em 2015. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de <span class="math inline">\(200\)</span> m na zona de arrebentação das ondas seguindo a direção da linha da costa. No total foram <span class="math inline">\(12\)</span> amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras 6 foram tomadas no VERAO de <span class="math inline">\(2015\)</span> e as outras 6 no INVERNO de <span class="math inline">\(2015\)</span>. As demais colunas mostram o número de indivíduos de cada espécie obtido nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.</p>
+<p>Vamos utilizar esta tabela como exemplo para calcularmos as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span>.</p>
+<p>Os cálculos serão feitos no programa R. Antes de iniciar, é importante preparar seu ambiente de trabalho. Iremos utilizar o R-Studio como ambiente de programação, mas você pode utilizar outro de sua vontade. A seguir faremos toda a preparação necessárias, mas pode ser útil consultar os links abaixo:</p>
+<ul>
+<li><p><a href="https://fcopf.github.io/probest-introR/" target="_blank">Introdução ao Ambiente R de Programação - Capítulos 1 e 2</a></p></li>
+<li><p><a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Estatística nas Ciências Ambientais - Capítulo 2 e 11</a></p></li>
+</ul>
+<div id="preparando-o-ambiente-de-trabalho" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Preparando o ambiente de trabalho</h2>
+<ol style="list-style-type: decimal">
+<li>Após abrir o R-Studio e criar um arquivo, direcionane R para a pasta de trabalho em quie você irá trabalhar. Por exemplo:</li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="diversidader.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&#39;C:/Users/usuario/Documents/Bio_II_2021&#39;</span> )</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Faça o download da base de dados que iremos utilizar e salve na pasta que você selecionou acima. O arquivo está disponível em:</li>
+</ol>
+<p><a href="https://fcopf.github.io/probest-cambientais/" target="_blank">Baia_santos.csv</a></p>
+<p>Ao clicarno link, copie os dados (Ctrl + C), abra um bloco de notas e colo (Ctrl + C). Salve o arquivo com o nome <strong>Baia_santos.csv</strong>.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Caso ainda não tenha feito, instales os segintes pacotes com o comando abaixo:</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="diversidader.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&#39;tidyverse&#39;</span>, <span class="st">&#39;vegan&#39;</span>, <span class="st">&#39;patchwork&#39;</span>, <span class="st">&#39;readxl&#39;</span>))</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>E habilite os pacotes</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="diversidader.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="diversidader.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb3-3"><a href="diversidader.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb3-4"><a href="diversidader.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div>
+<p>Os pacotes precisam ser instalados somente uma vez. No entanto, sempre que você fechar e abrir o R-Studio, precisará habilitá-los novamente.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Importe a base de dados para o R-Studio</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="diversidader.html#cb4-1" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">=</span> <span class="fu">read_excel</span>(<span class="st">&#39;Baia_santos.csv&#39;</span>)</span></code></pre></div>
+</div>
+<div id="diversidade-alpha" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Diversidade <span class="math inline">\(\alpha\)</span></h2>
+<p>A diversidade <span class="math inline">\(\alpha\)</span> se refere às diversidades registradas localente,isto é, em cada uma das amostras. Após obtermos estas medidas, nos interessa entender qual a diversidade média. Como dizemos no capítulo anterior, a diversidade pode ser caracterizada por diferentes índices. Os dois componentes principais do que entendermos por diversidade são: <strong>riqueza de espécies</strong> e <strong>equabilidade</strong> (ou uniformidade). O primeiro refere-se simplesmente ao número de espécies em uma amostra. Se contarmos o número de espécies presentes na primeira linha da tabela por exemplo, encontraremos <span class="math inline">\(7\)</span> espécies (sp_1, sp_2, sp_3, sp_4, sp_5, sp_6, sp_7). Já na última amostra encontramos somente <span class="math inline">\(3\)</span> espécies (sp_1, sp_6, sp_10).</p>
+<p>O segundo componente da diversidade se refere ao padrão de distribuição das abundâncias relativas. Se todas as espécies forem <em>igualmente</em> abundantes, a uniformidade é máxima. Por outro lado, se uma ou poucas espécies são muito abundantes e todas as demais raras (compostas por poucos indivíduos), a uniformidade é baixa (= dominância alta). Na linha <span class="math inline">\(3\)</span> por exemplo, uma das espécies é composta por <span class="math inline">\(48\)</span> individuos, enquanto a segunda espécie mais abundante apareceu com somente <span class="math inline">\(7\)</span>.</p>
+<p>Os índices de diversidade combinam a riqueza de espécies e equabilidade, para nos fonecer uma medida-resumo para as comunidades locais.</p>
+<p>Como temos amostras tomadas em dois períodos nos interessa justamente comparar estes períodos em função das medidas de diversidade nas diferentes escalas.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Epoca
+</th>
+<th style="text-align:right;">
+sp_1
+</th>
+<th style="text-align:right;">
+sp_2
+</th>
+<th style="text-align:right;">
+sp_3
+</th>
+<th style="text-align:right;">
+sp_4
+</th>
+<th style="text-align:right;">
+sp_5
+</th>
+<th style="text-align:right;">
+sp_6
+</th>
+<th style="text-align:right;">
+sp_7
+</th>
+<th style="text-align:right;">
+sp_8
+</th>
+<th style="text-align:right;">
+sp_9
+</th>
+<th style="text-align:right;">
+sp_10
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+95
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Magurran, Anne E. 2011. <span>“Medindo a Diversidade Biol<span>ó</span>gica.”</span> <em>Curitiba: Editora Da UFPR</em> 261.
+</div>
+<div class="csl-entry">
+Melo, Adriano Sanches. 2008. <span>“O Que Ganhamos ’Confundindo’ Riqueza de Espécies e Equabilidade Em Um Índice de Diversidade?”</span> <em>Biota Neotropica</em> 8: 21–27.
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introdiversidade.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["medidas-diversidade.pdf", "medidas-diversidade.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
