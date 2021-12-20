@@ -16,15 +16,15 @@ ____
 
 + <a href="https://youtu.be/Kmj7S1qIcKE" target="_blank">Medidas de diversidade - 04 - Diversidade gama</a>
 
-+ <a href="https://youtu.be/P-smkB-m5Mo" target="_blank">Medidas de diversidade - 05 - Diversidade betae</a>
++ <a href="https://youtu.be/P-smkB-m5Mo" target="_blank">Medidas de diversidade - 05 - Diversidade beta</a>
 
 + <a href="https://youtu.be/Ar28jUpmNPQ" target="_blank">Medidas de diversidade - 06 - Tutorial no R</a>
 
 ___
 
-> O tutorial em **pdf** e a base de dados utilizadas nos exemplos podem ser acessados em:
+> O tutorial rápido em **pdf** e a base com os dados utilizados no exemplo podem ser acessados em:
 
-+ <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
++ <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/notebook/Tutorial_diversidade_R.pdf" target="_blank">Tutorial em R - Medidas e Escalas de diversidade</a>
 
 + <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
 
