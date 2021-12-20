@@ -12,3 +12,4 @@ matriz-de-dissimilaridade
 visualizando-uma-matriz-de-dissimilaridade
 representando-uma-matriz-de-dissimilaridade
 salvando-as-figuras-deste-tutorial
+vedeoaulas

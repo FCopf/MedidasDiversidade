@@ -11,4 +11,5 @@ rmd_files: ["index.Rmd"
             ,"Rmd/01-introducao/00-PART-introducao.Rmd"
             ,"Rmd/01-introducao/01-introducao.Rmd"
             ,"Rmd/01-introducao/02-diversidader.Rmd"
+            ,"Rmd/01-introducao/03-videoaulas.Rmd"
              ]

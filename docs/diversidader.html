@@ -33,7 +33,7 @@
   
   
 <link rel="prev" href="introdiversidade.html"/>
-
+<link rel="next" href="vedeoaulas.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -183,6 +183,7 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="diversidader.html"><a href="diversidader.html#salvando-as-figuras-deste-tutorial"><i class="fa fa-check"></i><b>2.5</b> Salvando as figuras deste tutorial</a></li>
 </ul></li>
+<li class="chapter" data-level="3" data-path="vedeoaulas.html"><a href="vedeoaulas.html"><i class="fa fa-check"></i><b>3</b> Links para as vídeo-aulas e base de dados</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -205,7 +206,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="diversidader" class="section level1" number="2">
 <h1><span class="header-section-number">Capítulo 2</span> Medindo as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span>: tutorial no R</h1>
-<p>A tabela abaixo mostra a abundância de <span class="math inline">\(10\)</span> espécies de peixes captradas na zona de arrebentação da Baía de Santos em <span class="math inline">\(2015\)</span>. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de <span class="math inline">\(200\)</span> m na zona de arrebentação, seguindo a direção da linha da costa. No total foram <span class="math inline">\(12\)</span> amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras 6 foram tomadas no VERAO de <span class="math inline">\(2015\)</span> e as outras 6 no INVERNO de <span class="math inline">\(2015\)</span>. As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.</p>
+<p>Neste tutorial iremos utilizar uma base de dados denominada <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>, contendo a abundância de <span class="math inline">\(10\)</span> espécies de peixes capturadas na zona de arrebentação da Baía de Santos em <span class="math inline">\(2015\)</span>. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de <span class="math inline">\(200\)</span> m na zona de arrebentação, seguindo a direção da linha da costa. No total foram <span class="math inline">\(12\)</span> amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras 6 foram tomadas no VERAO de <span class="math inline">\(2015\)</span> e as outras 6 no INVERNO de <span class="math inline">\(2015\)</span>. As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.</p>
 <p>Vamos utilizar esta tabela como exemplo para calcularmos as diversidades <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span> e <span class="math inline">\(\gamma\)</span>.</p>
 <div id="preparando-o-ambiente-de-trabalho" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Preparando o ambiente de trabalho</h2>
@@ -223,14 +224,14 @@ div.csl-indent {
 <li><p>Faça o download da base de dados que iremos utilizar e salve dentro do diretório que você selecionou acima. O arquivo é do tipo <strong>.xlsx</strong> e está disponível para download no link <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a></p></li>
 <li><p>Caso ainda não tenha feito, instale os segintes pacotes com o comando abaixo:</p></li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="diversidader.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&#39;tidyverse&#39;</span>, <span class="st">&#39;vegan&#39;</span>, <span class="st">&#39;patchwork&#39;</span>, <span class="st">&#39;readxl&#39;</span>, <span class="st">&#39;iNEXT&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="diversidader.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&#39;readxl&#39;</span>, <span class="st">&#39;tidyverse&#39;</span>, <span class="st">&#39;vegan&#39;</span>, <span class="st">&#39;patchwork&#39;</span>, <span class="st">&#39;iNEXT&#39;</span>))</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Habilite os pacotes</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="diversidader.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb3-2"><a href="diversidader.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb3-3"><a href="diversidader.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb3-4"><a href="diversidader.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="diversidader.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb3-2"><a href="diversidader.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="diversidader.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb3-4"><a href="diversidader.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
 <span id="cb3-5"><a href="diversidader.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(iNEXT)</span></code></pre></div>
 <blockquote>
 <p>Os pacotes precisam ser instalados somente uma vez. No entanto, sempre que você fechar e abrir o R-Studio, precisará habilitá-los novamente.</p>
@@ -241,6 +242,467 @@ div.csl-indent {
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="diversidader.html#cb4-1" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">=</span> <span class="fu">read_excel</span>(<span class="st">&#39;Baia_santos.xlsx&#39;</span>)</span></code></pre></div>
 <p>Após importar visualize a tabela:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="diversidader.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(pe)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Epoca
+</th>
+<th style="text-align:right;">
+sp_1
+</th>
+<th style="text-align:right;">
+sp_2
+</th>
+<th style="text-align:right;">
+sp_3
+</th>
+<th style="text-align:right;">
+sp_4
+</th>
+<th style="text-align:right;">
+sp_5
+</th>
+<th style="text-align:right;">
+sp_6
+</th>
+<th style="text-align:right;">
+sp_7
+</th>
+<th style="text-align:right;">
+sp_8
+</th>
+<th style="text-align:right;">
+sp_9
+</th>
+<th style="text-align:right;">
+sp_10
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+INVERNO
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+95
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+VERAO
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
 <p>E verifique se as colunas foram lidas corretamente digitando o comando abaixo:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="diversidader.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(pe)</span></code></pre></div>
 <pre><code>## Rows: 12
@@ -725,7 +1187,7 @@ VERAO
 </tr>
 </tbody>
 </table>
-<p>Vamos adicionar ao final da tabela <code>pe</code> três colunas, uma com a riqueza de espécies (<span class="math inline">\(S\)</span>), uma com o índice de diversidade de Simpson (<span class="math inline">\(D\)</span>) e outra com a equabilidade de Simpson (<span class="math inline">\(E\)</span>). Desta forma teremos as três medidas de diversidade relevantes.</p>
+<p>Vamos adicionar ao final da tabela <code>pe</code> três colunas, uma com a riqueza de espécies (<span class="math inline">\(S\)</span>), uma com o índice de diversidade de Simpson (<span class="math inline">\(D\)</span>) e outra com a equabilidade de Simpson (<span class="math inline">\(E\)</span>). Desta forma teremos as três medidas de diversidade relevantes em nossa discussão.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="diversidader.html#cb8-1" aria-hidden="true" tabindex="-1"></a>pe <span class="ot">=</span> pe <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="diversidader.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="diversidader.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">S =</span> <span class="fu">specnumber</span>(<span class="fu">c_across</span>(sp_1<span class="sc">:</span>sp_10)),</span>
@@ -1340,7 +1802,7 @@ VERAO
 <span id="cb10-22"><a href="diversidader.html#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">&#39;&#39;</span>) <span class="sc">+</span></span>
 <span id="cb10-23"><a href="diversidader.html#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="diversidader.html#cb11-1" aria-hidden="true" tabindex="-1"></a>plt_D <span class="sc">|</span> plt_S <span class="sc">|</span> plt_E</span></code></pre></div>
-<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-25-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-26-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <blockquote>
 <p>Para visualizar os gráficos lado-a-lado com o comando acima, você deve ter instalado e habilitado o pacote <code>patchwork</code>.</p>
 </blockquote>
@@ -1366,7 +1828,7 @@ VERAO
 <span id="cb12-7"><a href="diversidader.html#cb12-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">&#39;b&#39;</span>, <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">col =</span> <span class="dv">2</span>, <span class="at">lty =</span> <span class="dv">2</span>,</span>
 <span id="cb12-8"><a href="diversidader.html#cb12-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&#39;Riqueza acumulada&#39;</span>,</span>
 <span id="cb12-9"><a href="diversidader.html#cb12-9" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&#39;Número de amostras&#39;</span>)</span></code></pre></div>
-<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Esta figura mostra que na primeira amostra do verão foram observadas <span class="math inline">\(4\)</span> espécies. Ao adicionar a segunda amostra, verificamos duas espécies adicionais, totalizando <span class="math inline">\(6\)</span> espécies. Nenhuma espécie adicional foi observada da <span class="math inline">\(3^a\)</span> a <span class="math inline">\(5^a\)</span> amostra. Somente na <span class="math inline">\(6^a\)</span> amostra, mais uma espécie foi observada, totalizando <span class="math inline">\(7\)</span> espécies capturadas no período do VERAO.</p>
 <p>A figura mostrada acima seguiu exatamente a sequência de amostras das linhas de nossa tabela. No entanto qualquer outra sequência seria igualmente válida. Assim, para termos um padrão <strong>esperado</strong>, existem vários métodos que nos permitirão encontrar uma valor de riqueza <strong>médio</strong> como função do número de amostras.</p>
 <p>A mesma ideia pode ser reformulada pensando na adição de indivíduos, isto é: a partir de quantos indivíduos amostrados a comunidade terá sua riqueza adaquadamente caracterizada?</p>
@@ -1396,7 +1858,7 @@ VERAO
 <span id="cb14-11"><a href="diversidader.html#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title=</span><span class="fu">element_blank</span>())</span></code></pre></div>
 <p>As curvas de acumulo de espécies nos dois períodos ficam:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="diversidader.html#cb15-1" aria-hidden="true" tabindex="-1"></a>plt_gama</span></code></pre></div>
-<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>As funções do pacote <code>iNEXT</code> nos permitem uma <strong>extrapolação</strong> do que seria esperado se continuássemos coletando. Desta figura percebemos dois pontos importantes.</p>
 <ul>
 <li><p>a riqueza total é similar entre os períodos, ainda que localmente, o verão tenha tido em média menores riqueza locais (veja padrões de diversidade <span class="math inline">\(\alpha\)</span>).</p></li>
@@ -1616,7 +2078,7 @@ Amostra 1
 5
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 </tr>
 <tr>
@@ -1624,7 +2086,7 @@ Amostra 1
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 2
@@ -1857,6 +2319,9 @@ Veja também que a diagonal desta matriz é igual a <span class="math inline">\(
 </blockquote>
 <blockquote>
 <p>O argumento <code>binary = TRUE</code> garante que o índice será calculado somente considerando a presença (1) e ausência (0) das espécies.</p>
+</blockquote>
+<blockquote>
+<p><strong>Obs</strong>: se utilizar o argumento <code>binary = TRUE</code>, não seria realmente necessário que transformar a matriz em presença e ausência, pois este argumento se encarrega desta transformação.</p>
 </blockquote>
 <p>Nossa matriz de dissimilaridade fica:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="diversidader.html#cb18-1" aria-hidden="true" tabindex="-1"></a>jac <span class="sc">%&gt;%</span> <span class="fu">as.matrix</span>()</span></code></pre></div>
@@ -2427,11 +2892,13 @@ Amostra 12
 <span id="cb20-8"><a href="diversidader.html#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
 <span id="cb20-9"><a href="diversidader.html#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-10"><a href="diversidader.html#cb20-10" aria-hidden="true" tabindex="-1"></a>plt_beta</span></code></pre></div>
-<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="medidas-diversidade_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>Temos acima um mapa com eixos <span class="math inline">\(1\)</span> e <span class="math inline">\(2\)</span>. Cada ponto é uma amostra (temos 12 ao todo), identificadas de acordo com o período (INVERNO, VERAO). As espécies identificadas pelo seu nome.</p>
 <p>A maior parte dos pontos do verão aparece na posição mais a direita, enquanto os pontos de inverno mais a esquerda. Isto sugere que as amostras com composições mais similares entre si tendem a ser amostras coletadas em um mesmo período.</p>
 <p>Posicionar as espécies nos ajuda a saber quais delas tendem a ser mais frequentes em cada período. As espécies à direita tendem a ser mais frequêntes no verão e as espécies mais à esquerda no inverno. Compare esta figura com nossa matriz original.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="diversidader.html#cb21-1" aria-hidden="true" tabindex="-1"></a>pe</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="diversidader.html#cb21-1" aria-hidden="true" tabindex="-1"></a>pe <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="diversidader.html#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Epoca<span class="sc">:</span>sp_10) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="diversidader.html#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">View</span>()</span></code></pre></div>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -2467,15 +2934,6 @@ sp_9
 </th>
 <th style="text-align:right;">
 sp_10
-</th>
-<th style="text-align:right;">
-S
-</th>
-<th style="text-align:right;">
-D
-</th>
-<th style="text-align:right;">
-E
 </th>
 </tr>
 </thead>
@@ -2514,15 +2972,6 @@ INVERNO
 <td style="text-align:right;color: black !important;background-color: #7be896 !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-7
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-2.775990
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-0.3965700
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #7be896 !important;">
@@ -2558,15 +3007,6 @@ INVERNO
 <td style="text-align:right;color: black !important;background-color: #7be896 !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-6
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-3.763203
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-0.6272005
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #7be896 !important;">
@@ -2601,15 +3041,6 @@ INVERNO
 </td>
 <td style="text-align:right;color: black !important;background-color: #7be896 !important;">
 0
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-4
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-1.568057
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-0.3920143
 </td>
 </tr>
 <tr>
@@ -2646,15 +3077,6 @@ INVERNO
 <td style="text-align:right;color: black !important;background-color: #7be896 !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-3
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-1.741936
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-0.5806452
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #7be896 !important;">
@@ -2689,15 +3111,6 @@ INVERNO
 </td>
 <td style="text-align:right;color: black !important;background-color: #7be896 !important;">
 0
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-5
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-1.670768
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-0.3341535
 </td>
 </tr>
 <tr>
@@ -2734,15 +3147,6 @@ INVERNO
 <td style="text-align:right;color: black !important;background-color: #7be896 !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-3
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-1.567380
-</td>
-<td style="text-align:right;color: black !important;background-color: #7be896 !important;">
-0.5224601
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #e8867b !important;">
@@ -2778,15 +3182,6 @@ VERAO
 <td style="text-align:right;color: black !important;background-color: #e8867b !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-4
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-1.722013
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-0.4305031
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #e8867b !important;">
@@ -2821,15 +3216,6 @@ VERAO
 </td>
 <td style="text-align:right;color: black !important;background-color: #e8867b !important;">
 0
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-4
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-3.555556
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-0.8888889
 </td>
 </tr>
 <tr>
@@ -2866,15 +3252,6 @@ VERAO
 <td style="text-align:right;color: black !important;background-color: #e8867b !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-5
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-3.977444
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-0.7954887
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #e8867b !important;">
@@ -2910,15 +3287,6 @@ VERAO
 <td style="text-align:right;color: black !important;background-color: #e8867b !important;">
 0
 </td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-3
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-2.272727
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-0.7575758
-</td>
 </tr>
 <tr>
 <td style="text-align:left;color: black !important;background-color: #e8867b !important;">
@@ -2953,15 +3321,6 @@ VERAO
 </td>
 <td style="text-align:right;color: black !important;background-color: #e8867b !important;">
 0
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-4
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-3.266667
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-0.8166667
 </td>
 </tr>
 <tr>
@@ -2998,15 +3357,6 @@ VERAO
 <td style="text-align:right;color: black !important;background-color: #e8867b !important;">
 1
 </td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-3
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-1.588235
-</td>
-<td style="text-align:right;color: black !important;background-color: #e8867b !important;">
-0.5294118
-</td>
 </tr>
 </tbody>
 </table>
@@ -3036,14 +3386,6 @@ VERAO
 <span id="cb22-14"><a href="diversidader.html#cb22-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">width =</span> <span class="dv">7</span>, <span class="at">height =</span> <span class="dv">5</span>)</span></code></pre></div>
 <p>Após rodar estes comandos, as figuras serão salvas em sua pasta de trabalho, aquela que você definiu no início desta seção.</p>
 
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div class="csl-entry">
-Magurran, Anne E. 2011. <span>“Medindo a Diversidade Biol<span>ó</span>gica.”</span> <em>Curitiba: Editora Da UFPR</em> 261.
-</div>
-<div class="csl-entry">
-Melo, Adriano Sanches. 2008. <span>“O Que Ganhamos ’Confundindo’ Riqueza de Espécies e Equabilidade Em Um Índice de Diversidade?”</span> <em>Biota Neotropica</em> 8: 21–27.
-</div>
-</div>
 </div>
 </div>
             </section>
@@ -3051,8 +3393,8 @@ Melo, Adriano Sanches. 2008. <span>“O Que Ganhamos ’Confundindo’ Riqueza d
           </div>
         </div>
       </div>
-<a href="introdiversidade.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="introdiversidade.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="vedeoaulas.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

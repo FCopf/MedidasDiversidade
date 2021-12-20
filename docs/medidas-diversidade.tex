@@ -6,7 +6,7 @@
 ]{book}
 \title{Medidas de diversidade}
 \author{Fabio Cop Ferreira \and \href{mailto:fabiocopf@gmail.com}{\nolinkurl{fabiocopf@gmail.com}}; \href{mailto:fcferreira@unifesp.br}{\nolinkurl{fcferreira@unifesp.br}} \and Instituto do Mar, Universidade Federal de São Paulo}
-\date{Última atualização em 12/12/2021}
+\date{Última atualização em 20/12/2021}
 
 \usepackage{amsmath,amssymb}
 \usepackage{lmodern}
@@ -256,7 +256,7 @@ Para um texto introdutório sobre escalas de diversidade leia: Benone \& Montag 
 \hypertarget{diversidader}{%
 \chapter{\texorpdfstring{Medindo as diversidades \(\alpha\), \(\beta\) e \(\gamma\): tutorial no R}{Medindo as diversidades \textbackslash alpha, \textbackslash beta e \textbackslash gamma: tutorial no R}}\label{diversidader}}
 
-A tabela abaixo mostra a abundância de \(10\) espécies de peixes captradas na zona de arrebentação da Baía de Santos em \(2015\). Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de \(200\) m na zona de arrebentação, seguindo a direção da linha da costa. No total foram \(12\) amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras 6 foram tomadas no VERAO de \(2015\) e as outras 6 no INVERNO de \(2015\). As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
+Neste tutorial iremos utilizar uma base de dados denominada Baia\_santos.xlsx, contendo a abundância de \(10\) espécies de peixes capturadas na zona de arrebentação da Baía de Santos em \(2015\). Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de \(200\) m na zona de arrebentação, seguindo a direção da linha da costa. No total foram \(12\) amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras 6 foram tomadas no VERAO de \(2015\) e as outras 6 no INVERNO de \(2015\). As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
 
 Vamos utilizar esta tabela como exemplo para calcularmos as diversidades \(\alpha\), \(\beta\) e \(\gamma\).
 
@@ -298,7 +298,7 @@ Os cálculos serão feitos no programa R. Antes de iniciar, é importante prepar
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}vegan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}patchwork\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}readxl\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}iNEXT\textquotesingle{}}\NormalTok{))}
+\FunctionTok{install.packages}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}readxl\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}vegan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}patchwork\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}iNEXT\textquotesingle{}}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -312,10 +312,10 @@ Os cálculos serão feitos no programa R. Antes de iniciar, é importante prepar
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readxl)}
 \FunctionTok{library}\NormalTok{(tidyverse)}
 \FunctionTok{library}\NormalTok{(vegan)}
 \FunctionTok{library}\NormalTok{(patchwork)}
-\FunctionTok{library}\NormalTok{(readxl)}
 \FunctionTok{library}\NormalTok{(iNEXT)}
 \end{Highlighting}
 \end{Shaded}
@@ -345,6 +345,36 @@ Após importar visualize a tabela:
 \FunctionTok{View}\NormalTok{(pe)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r}
+\hline
+Epoca & sp\_1 & sp\_2 & sp\_3 & sp\_4 & sp\_5 & sp\_6 & sp\_7 & sp\_8 & sp\_9 & sp\_10\\
+\hline
+INVERNO & 5 & 6 & 72 & 65 & 8 & 6 & 1 & 0 & 0 & 0\\
+\hline
+INVERNO & 6 & 0 & 1 & 18 & 9 & 12 & 0 & 1 & 0 & 0\\
+\hline
+INVERNO & 7 & 0 & 0 & 48 & 2 & 0 & 0 & 4 & 0 & 0\\
+\hline
+INVERNO & 0 & 0 & 0 & 13 & 4 & 1 & 0 & 0 & 0 & 0\\
+\hline
+INVERNO & 2 & 0 & 143 & 48 & 1 & 0 & 0 & 1 & 0 & 0\\
+\hline
+INVERNO & 0 & 0 & 95 & 28 & 0 & 0 & 1 & 0 & 0 & 0\\
+\hline
+VERAO & 1 & 0 & 0 & 8 & 0 & 27 & 0 & 0 & 1 & 0\\
+\hline
+VERAO & 0 & 0 & 0 & 1 & 3 & 2 & 2 & 0 & 0 & 0\\
+\hline
+VERAO & 8 & 0 & 0 & 1 & 4 & 6 & 0 & 0 & 4 & 0\\
+\hline
+VERAO & 2 & 0 & 0 & 0 & 6 & 2 & 0 & 0 & 0 & 0\\
+\hline
+VERAO & 1 & 0 & 0 & 3 & 0 & 2 & 0 & 0 & 1 & 0\\
+\hline
+VERAO & 1 & 0 & 0 & 0 & 0 & 7 & 0 & 0 & 0 & 1\\
+\hline
+\end{tabular}
 
 E verifique se as colunas foram lidas corretamente digitando o comando abaixo:
 
@@ -413,7 +443,7 @@ Epoca & sp\_1 & sp\_2 & sp\_3 & sp\_4 & sp\_5 & sp\_6 & sp\_7 & sp\_8 & sp\_9 & 
 \hline
 \end{tabular}
 
-Vamos adicionar ao final da tabela \texttt{pe} três colunas, uma com a riqueza de espécies (\(S\)), uma com o índice de diversidade de Simpson (\(D\)) e outra com a equabilidade de Simpson (\(E\)). Desta forma teremos as três medidas de diversidade relevantes.
+Vamos adicionar ao final da tabela \texttt{pe} três colunas, uma com a riqueza de espécies (\(S\)), uma com o índice de diversidade de Simpson (\(D\)) e outra com a equabilidade de Simpson (\(E\)). Desta forma teremos as três medidas de diversidade relevantes em nossa discussão.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -509,7 +539,7 @@ Para compararmos a diversidade \(\alpha\) entre os períodos de VERAO e INVERNO 
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-25-1} \end{center}
+\begin{center}\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-26-1} \end{center}
 
 \begin{quote}
 Para visualizar os gráficos lado-a-lado com o comando acima, você deve ter instalado e habilitado o pacote \texttt{patchwork}.
@@ -548,7 +578,7 @@ Para verificarmos como o número de espécies total aumenta com o número de amo
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-26-1.pdf}
+\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-27-1.pdf}
 
 Esta figura mostra que na primeira amostra do verão foram observadas \(4\) espécies. Ao adicionar a segunda amostra, verificamos duas espécies adicionais, totalizando \(6\) espécies. Nenhuma espécie adicional foi observada da \(3^a\) a \(5^a\) amostra. Somente na \(6^a\) amostra, mais uma espécie foi observada, totalizando \(7\) espécies capturadas no período do VERAO.
 
@@ -601,7 +631,7 @@ As curvas de acumulo de espécies nos dois períodos ficam:
 \end{Highlighting}
 \end{Shaded}
 
-\begin{center}\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-29-1} \end{center}
+\begin{center}\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-30-1} \end{center}
 
 As funções do pacote \texttt{iNEXT} nos permitem uma \textbf{extrapolação} do que seria esperado se continuássemos coletando. Desta figura percebemos dois pontos importantes.
 
@@ -681,9 +711,9 @@ Em verde temos as espécies presentes nas duas amostras, em vermelho as espécie
 \cline{3-4}
   & Presença-Ausência & 1 & 0\\
 \hline
- & 1 & 5 & 1\\
+ & 1 & 5 & 2\\
 \cline{2-4}
-\multirow{-2}{*}{\raggedright\arraybackslash \textbf{Amostra 1}} & 0 & 2 & 2\\
+\multirow{-2}{*}{\raggedright\arraybackslash \textbf{Amostra 1}} & 0 & 1 & 2\\
 \hline
 \end{tabular}
 \end{table}
@@ -777,6 +807,10 @@ O argumento \texttt{method\ =\ \textquotesingle{}jaccard\textquotesingle{}} espe
 O argumento \texttt{binary\ =\ TRUE} garante que o índice será calculado somente considerando a presença (1) e ausência (0) das espécies.
 \end{quote}
 
+\begin{quote}
+\textbf{Obs}: se utilizar o argumento \texttt{binary\ =\ TRUE}, não seria realmente necessário que transformar a matriz em presença e ausência, pois este argumento se encarrega desta transformação.
+\end{quote}
+
 Nossa matriz de dissimilaridade fica:
 
 \begin{Shaded}
@@ -863,7 +897,7 @@ Os resultados podem ser expressos graficamente:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-40-1.pdf}
+\includegraphics{medidas-diversidade_files/figure-latex/unnamed-chunk-41-1.pdf}
 
 Temos acima um mapa com eixos \(1\) e \(2\). Cada ponto é uma amostra (temos 12 ao todo), identificadas de acordo com o período (INVERNO, VERAO). As espécies identificadas pelo seu nome.
 
@@ -873,40 +907,42 @@ Posicionar as espécies nos ajuda a saber quais delas tendem a ser mais frequent
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pe}
+\NormalTok{pe }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(Epoca}\SpecialCharTok{:}\NormalTok{sp\_10) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{View}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{table}
 \centering\begingroup\fontsize{10}{12}\selectfont
 
-\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r|r|r|r}
+\begin{tabular}{l|r|r|r|r|r|r|r|r|r|r}
 \hline
-Epoca & sp\_1 & sp\_2 & sp\_3 & sp\_4 & sp\_5 & sp\_6 & sp\_7 & sp\_8 & sp\_9 & sp\_10 & S & D & E\\
+Epoca & sp\_1 & sp\_2 & sp\_3 & sp\_4 & sp\_5 & sp\_6 & sp\_7 & sp\_8 & sp\_9 & sp\_10\\
 \hline
-\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{5}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{72}} & \cellcolor[HTML]{7be896}{\textcolor{black}{65}} & \cellcolor[HTML]{7be896}{\textcolor{black}{8}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{7}} & \cellcolor[HTML]{7be896}{\textcolor{black}{2.775990}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0.3965700}}\\
+\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{5}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{72}} & \cellcolor[HTML]{7be896}{\textcolor{black}{65}} & \cellcolor[HTML]{7be896}{\textcolor{black}{8}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{18}} & \cellcolor[HTML]{7be896}{\textcolor{black}{9}} & \cellcolor[HTML]{7be896}{\textcolor{black}{12}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{3.763203}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0.6272005}}\\
+\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{6}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{18}} & \cellcolor[HTML]{7be896}{\textcolor{black}{9}} & \cellcolor[HTML]{7be896}{\textcolor{black}{12}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{7}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{48}} & \cellcolor[HTML]{7be896}{\textcolor{black}{2}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{4}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{4}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1.568057}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0.3920143}}\\
+\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{7}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{48}} & \cellcolor[HTML]{7be896}{\textcolor{black}{2}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{4}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{13}} & \cellcolor[HTML]{7be896}{\textcolor{black}{4}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{3}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1.741936}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0.5806452}}\\
+\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{13}} & \cellcolor[HTML]{7be896}{\textcolor{black}{4}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{2}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{143}} & \cellcolor[HTML]{7be896}{\textcolor{black}{48}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{5}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1.670768}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0.3341535}}\\
+\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{2}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{143}} & \cellcolor[HTML]{7be896}{\textcolor{black}{48}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{95}} & \cellcolor[HTML]{7be896}{\textcolor{black}{28}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{3}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1.567380}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0.5224601}}\\
+\cellcolor[HTML]{7be896}{\textcolor{black}{INVERNO}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{95}} & \cellcolor[HTML]{7be896}{\textcolor{black}{28}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{1}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}} & \cellcolor[HTML]{7be896}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{8}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{27}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1.722013}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0.4305031}}\\
+\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{8}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{27}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3.555556}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0.8888889}}\\
+\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{8}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{6}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{5}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3.977444}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0.7954887}}\\
+\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{8}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{6}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{6}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2.272727}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0.7575758}}\\
+\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{6}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{4}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3.266667}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0.8166667}}\\
+\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{2}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}}\\
 \hline
-\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{7}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{3}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1.588235}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0.5294118}}\\
+\cellcolor[HTML]{e8867b}{\textcolor{black}{VERAO}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{7}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{0}} & \cellcolor[HTML]{e8867b}{\textcolor{black}{1}}\\
 \hline
 \end{tabular}
 \endgroup{}
@@ -947,6 +983,46 @@ Após rodar estas funções geramos uma série de figuras. Estas figuras podem s
 \end{Shaded}
 
 Após rodar estes comandos, as figuras serão salvas em sua pasta de trabalho, aquela que você definiu no início desta seção.
+
+\hypertarget{vedeoaulas}{%
+\chapter{Links para as vídeo-aulas e base de dados}\label{vedeoaulas}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+As vídeo aulas referentes ao conteúdo desta apostila pode ser encontrado:
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  Medidas de diversidade - 01 - Indice de diversidade
+\end{itemize}
+
+Medidas de diversidade - 02 - Diversidade na paisagem
+
+Medidas de diversidade - 03 - Diversidade alfa
+
+Medidas de diversidade - 04 - Diversidade gama
+
+Medidas de diversidade - 05 - Diversidade betae
+
+Medidas de diversidade - 06 - Tutorial no R
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{quote}
+O tutorial em \textbf{pdf} e a base de dados utilizadas nos exemplos podem ser acessados em:
+\end{quote}
+
+\begin{itemize}
+\item
+  Baia\_santos.xlsx
+\item
+  Baia\_santos.xlsx
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
   \bibliography{book.bib,packages.bib}
 

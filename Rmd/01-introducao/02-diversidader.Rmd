@@ -13,7 +13,7 @@ St = ncol(pe) - 1
 epl = levels(factor(pe$Epoca))
 ```
 
-A tabela abaixo mostra a abundância de $`r St`$ espécies de peixes captradas na zona de arrebentação da Baía de Santos em $2015$. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de $200$ m na zona de arrebentação, seguindo a direção da linha da costa. No total foram $`r n`$ amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras `r nverao` foram tomadas no `r epl[2]` de $2015$ e as outras  `r ninverno` no `r epl[1]` de $2015$. As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
+Neste tutorial iremos utilizar uma base de dados denominada <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>, contendo a abundância de $`r St`$ espécies de peixes capturadas na zona de arrebentação da Baía de Santos em $2015$. Cada linha da tabela representa uma amostra, isto é, um arrasto feito ao longo de $200$ m na zona de arrebentação, seguindo a direção da linha da costa. No total foram $`r n`$ amostras. A primeira coluna identifica em que período do ano cada amostra foi obtida. As primeiras `r nverao` foram tomadas no `r epl[2]` de $2015$ e as outras  `r ninverno` no `r epl[1]` de $2015$. As demais colunas mostram o número de indivíduos de cada espécie nas amostras. Os nomes das espécies foram omitidos para facilitar a apresentação dos dados.
 
 Vamos utilizar esta tabela como exemplo para calcularmos as diversidades $\alpha$, $\beta$ e $\gamma$.
 
@@ -39,16 +39,16 @@ setwd('C:/Users/Usuario/Documents/Bio_II_2021' )
 3. Caso ainda não tenha feito, instale os segintes pacotes com o comando abaixo:
 
 ```{r eval = FALSE}
-install.packages(c('tidyverse', 'vegan', 'patchwork', 'readxl', 'iNEXT'))
+install.packages(c('readxl', 'tidyverse', 'vegan', 'patchwork', 'iNEXT'))
 ```
 
 4. Habilite os pacotes
 
 ```{r eval = FALSE}
+library(readxl)
 library(tidyverse)
 library(vegan)
 library(patchwork)
-library(readxl)
 library(iNEXT)
 ```
 
@@ -64,6 +64,10 @@ Após importar visualize a tabela:
 
 ```{r eval = FALSE}
 View(pe)
+```
+
+```{r echo = FALSE}
+pe %>% kableExtra::kable()
 ```
 
 E verifique se as colunas foram lidas corretamente digitando o comando abaixo:
@@ -94,7 +98,7 @@ pe %>%
               background = '#e8867b', color = 'black')
 ```
 
-Vamos adicionar ao final da tabela `pe` três colunas, uma com a riqueza de espécies ($S$), uma com o índice de diversidade de Simpson ($D$) e outra com a equabilidade de Simpson ($E$). Desta forma teremos as três medidas de diversidade relevantes.
+Vamos adicionar ao final da tabela `pe` três colunas, uma com a riqueza de espécies ($S$), uma com o índice de diversidade de Simpson ($D$) e outra com a equabilidade de Simpson ($E$). Desta forma teremos as três medidas de diversidade relevantes em nossa discussão.
 
 ```{r}
 pe = pe %>%
@@ -307,8 +311,8 @@ Em verde temos as espécies presentes nas duas amostras, em vermelho as espécie
 tb12 = tibble(
   ' ' = factor(rep('Amostra 1', 2)), 
   'Presença-Ausência' = c('1', '0'), 
-  `1` = c(5, 2),
-  `0` = c(1, 2))
+  `1` = c(a, c),
+  `0` = c(b, d))
 
 tb12 %>% 
   kableExtra::kable() %>% 
@@ -387,7 +391,9 @@ jac = vegdist(pe_ocor, method = 'jaccard', binary = TRUE)
 
 > O argumento `method = 'jaccard'` especifica qual índice iremos utilizar.
 
-> O argumento `binary = TRUE` garante que o índice será calculado somente considerando a presença (1) e ausência (0) das espécies.
+> O argumento `binary = TRUE` garante que o índice será calculado somente considerando a presença (1) e ausência (0) das espécies. 
+
+> **Obs**: se utilizar o argumento `binary = TRUE`, não seria realmente necessário que transformar a matriz em presença e ausência, pois este argumento se encarrega desta transformação.
 
 Nossa matriz de dissimilaridade fica:
 
@@ -452,11 +458,14 @@ A maior parte dos pontos do verão aparece na posição mais a direita, enquanto
 Posicionar as espécies nos ajuda a saber quais delas tendem a ser mais frequentes em cada período. As espécies à direita tendem a ser mais frequêntes no verão e as espécies mais à esquerda no inverno. Compare esta figura com nossa matriz original.
 
 ```{r eval = FALSE}
-pe
+pe %>% 
+  select(Epoca:sp_10) %>% 
+  View()
 ```
 
 ```{r echo = FALSE}
 pe %>% 
+  select(Epoca:sp_10) %>% 
   kableExtra::kable() %>% 
   kable_styling(full_width = F, font_size = 10) %>% 
   row_spec(which(pe$Epoca == 'INVERNO'),

@@ -1,0 +1,36 @@
+# Links para as vídeo-aulas e base de dados {#vedeoaulas}
+
+```{r, echo = FALSE, message = FALSE}
+knitr::opts_chunk$set(message = FALSE, echo = TRUE, warnings = FALSE)
+```
+
+____
+
+> As vídeo aulas referentes ao conteúdo desta apostila podem ser encontradas abaixo:
+
++ <a href="https://youtu.be/122st7UGfJQ" target="_blank">Medidas de diversidade - 01 - Indice de diversidade</a>
+
++ <a href="https://youtu.be/WEZcVBmxLE8" target="_blank">Medidas de diversidade - 02 - Diversidade na paisagem</a>
+
++ <a href="https://youtu.be/KbfNysRD2-A" target="_blank">Medidas de diversidade - 03 - Diversidade alfa</a>
+
++ <a href="https://youtu.be/Kmj7S1qIcKE" target="_blank">Medidas de diversidade - 04 - Diversidade gama</a>
+
++ <a href="https://youtu.be/P-smkB-m5Mo" target="_blank">Medidas de diversidade - 05 - Diversidade betae</a>
+
++ <a href="https://youtu.be/Ar28jUpmNPQ" target="_blank">Medidas de diversidade - 06 - Tutorial no R</a>
+
+___
+
+> O tutorial em **pdf** e a base de dados utilizadas nos exemplos podem ser acessados em:
+
++ <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
+
++ <a href="https://github.com/FCopf/MedidasDiversidade/blob/master/datasets/Baia_santos.xlsx" target="_blank">Baia_santos.xlsx</a>
+
+___
+
+```{r echo = FALSE}
+rm(list = ls())
+```
+
